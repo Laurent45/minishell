@@ -1,8 +1,13 @@
 
-SRCS			= $(addprefix srcs/, main.c error.c token/token.c\
-				  token/clear_token.c command/command.c)
+SRCS			= $(addprefix srcs/, main.c error.c ${COMMAND} ${STRUCT} ${TOKEN} ${ENV} ${PRINT}) 
 
-HEADERS			= $(addprefix headers/, error.h token.h struct.h command.h)
+COMMAND			= $(addprefix command/, command.c redirection.c execute.c)
+STRUCT			= $(addprefix struct/, create.c clear.c delete.c)
+TOKEN			= $(addprefix token/, token.c check.c)
+HEADERS			= $(addprefix headers/, error.h token.h struct.h command.h print.h)
+ENV				= $(addprefix env/, env.c)
+
+PRINT			= $(addprefix print/, print.c)
 
 OBJS			= ${SRCS:.c=.o}
 

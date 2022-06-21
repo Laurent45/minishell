@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:39:47 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/09 10:13:33 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/14 17:12:11 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,6 @@ static int	ft_char_type(char c)
 	return (0);
 }
 
-static	int	ft_new_token(t_list **tokens, int code, char *word, int quote)
-{
-	t_token		*token;
-	t_list		*node;
-
-	token = (t_token *) malloc(sizeof(t_token));
-	if (!token)
-		return (0);
-	token->code = code;
-	token->word = word;
-	token->quote = quote;
-	node = ft_lstnew((void *) token);
-	if (!node)
-	{
-		ft_del_token((void *) token);
-		return (0);
-	}
-	ft_lstadd_back(tokens, node);
-	return (1);
-}
-
 static int	ft_token_word(t_list **tokens, char *line, int len, int quote)
 {
 	char	*dup;
@@ -60,7 +39,7 @@ static int	ft_token_word(t_list **tokens, char *line, int len, int quote)
 
 	dup = (char *) malloc(sizeof(char) * (len + 1));
 	if (!dup)
-		return (0);
+		return (ft_allocated_err(0, "char * in ft_token_word"));
 	i = 0;
 	while (i < len)
 	{
@@ -102,7 +81,7 @@ int	ft_token_quote(t_list **tokens, char *line, int quote, int *ind)
 	while (line[i] && ft_char_type(line[i]) != quote)
 		i++;
 	if (!line[i])
-		return (ft_puterror(-1, "Quote unclosed\n"));
+		return (ft_puterror(0, "minishell: syntax error quote unclosed\n"));
 	*ind += (i + 1);
 	return (ft_token_word(tokens, line, i, quote));
 }
@@ -121,17 +100,17 @@ int	ft_create_tokens(t_list **tokens, char *line)
 		if (code != 0)
 		{
 			if (r < i && ft_token_word(tokens, line + r, i - r, 0) == 0)
-					return (ft_clear_tokens(tokens));
-			if ((code == S_QUOTE || code == D_QUOTE) 
-					&& ft_token_quote(tokens, line + i + 1, code, &i) != 1)
-				return (ft_clear_tokens(tokens));
+				return (ft_clear_tokens(tokens, 0));
+			if ((code == S_QUOTE || code == D_QUOTE)
+				&& ft_token_quote(tokens, line + i + 1, code, &i) == 0)
+				return (ft_clear_tokens(tokens, 0));
 			if (ft_token_meta(tokens, code) == 0)
-					return (ft_clear_tokens(tokens));
+				return (ft_clear_tokens(tokens, 0));
 			r = i + 1;
 		}
 		i++;
 	}
 	if (r < i && ft_token_word(tokens, line + r, i - r, 0) == 0)
-			return (ft_clear_tokens(tokens));
+		return (ft_clear_tokens(tokens, 0));
 	return (1);
 }

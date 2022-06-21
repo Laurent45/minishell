@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clear_token.c                                      :+:      :+:    :+:   */
+/*   print.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/07 09:51:06 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/07 10:11:35 by lfrederi         ###   ########.fr       */
+/*   Created: 2022/06/19 19:21:03 by lfrederi          #+#    #+#             */
+/*   Updated: 2022/06/19 19:27:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
-#include "struct.h"
-#include <stdlib.h>
+#ifndef PRINT_H
+# define PRINT_H
 
-void	ft_del_token(void *token)
-{
-	if (((t_token *) token)->word)
-		free(((t_token *) token)->word);
-	free(token);
-}
+# include "struct.h"
 
-int	ft_clear_tokens(t_list **tokens)
-{
-	ft_lstclear(tokens, &ft_del_token);
-	return (0);
-}
+void	print_tokens(t_list *tokens);
+void	print_strings(t_list *strings);
+void	print_args(t_list *strings);
+void	print_command(t_list *commands);
+void	print_env(t_list *envs);
+
+#endif
