@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/20 09:44:53 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/21 23:27:12 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_input
 typedef struct s_command
 {
 	int				id;
+	int				redirect_failed;
 	t_list			*args;
 	struct s_output	*output;
 	struct s_input	*input;

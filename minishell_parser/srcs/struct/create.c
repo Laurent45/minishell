@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 18:02:26 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/18 16:13:49 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/21 23:29:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	ft_new_command(t_command **command)
 	*command = (t_command *) malloc(sizeof(t_command));
 	if (!(*command))
 		return (ft_allocated_err(0, "t_command * in ft_new_command"));
+	(*command)->redirect_failed = 0;
 	(*command)->args = NULL;
 	(*command)->output = NULL;
 	(*command)->input = NULL;

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:15:45 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 10:46:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/21 23:48:10 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,12 @@ int	ft_allocated_err(int ret, char *type)
 int	ft_puterror(int ret, char *message)
 {
 	ft_putstr_fd(message, 2);
+	return (ret);
+}
+
+int	ft_perror(int ret, char *message)
+{
+	ft_putstr_fd("minishell: ", 2);
+	perror(message);
 	return (ret);
 }
