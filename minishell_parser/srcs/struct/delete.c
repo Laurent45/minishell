@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 11:00:18 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 19:47:39 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/26 17:33:23 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_del_str(void	*content)
 	free(content);
 }
 
-void	ft_del_output(t_output *output)
+/*void	ft_del_output(t_output *output)
 {
 	if (output->filename)
 		free(output->filename);
@@ -42,22 +42,24 @@ void	ft_del_input(t_input *input)
 	input->filename = NULL;
 	input->heredoc = NULL;
 	free(input);
-}
+}*/
 
 void	ft_del_command(void	*command)
 {
+	// TODO: Delete clean redir
 	t_command	*cmd;
 
 	cmd = (t_command *) command;
+	if (cmd->cmd)
+		free(cmd->cmd);
 	if (cmd->args)
 		ft_lstclear(&cmd->args, &ft_del_str);
-	if (cmd->output)
-		ft_del_output(cmd->output);
-	if (cmd->input)
-		ft_del_input(cmd->input);
+	if (cmd->env_var)
+		ft_lstclear(&cmd->env_var, &ft_del_str);
+	cmd->cmd = NULL;
 	cmd->args = NULL;
-	cmd->output = NULL;
-	cmd->input = NULL;
+	cmd->redir = NULL;
+	cmd->env_var = NULL;
 	free(command);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 19:13:51 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/19 19:24:41 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/26 17:35:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	print_tokens(t_list *tokens)
 {
 	for (; tokens; tokens = tokens->next)
-		printf("code = %d et word = %s et quote = %d\n", ((t_token *) tokens->content)->code, ((t_token *) tokens->content)->word, ((t_token *) tokens->content)->quote);
+		printf("code = %d et word = %s\n", ((t_token *) tokens->content)->code, ((t_token *) tokens->content)->word);
 }
 
 void	print_strings(t_list *strings)
@@ -43,35 +43,29 @@ void	print_command(t_list *commands)
 	{
 		t_command *cmd = (t_command *) commands->content;
 
+		printf("cmd --> %s\n", cmd->cmd);
+
+		printf("env_var  --> ");
+		print_args(cmd->env_var);
+
 		printf("args  --> ");
 		print_args(cmd->args);
 
-		if (cmd->output)
+		for (; cmd->redir; cmd->redir = cmd->redir->next)
 		{
-			if (cmd->output->filename)
-				printf("output (filename) ==> %s\n", cmd->output->filename);
-			printf("output (append) ==> %d\n", cmd->output->append);
-		}
-		else
-			printf("output == NULL\n");
+			t_redir *redir = (t_redir *) cmd->redir->content;
+			if (redir->outfile)
+				printf("outfile => %s\n", redir->outfile);
+			if (redir->appendfile)
+				printf("appendfile => %s\n", redir->appendfile);
 
-		if (cmd->input)
-		{
-			printf("input (keyboard) ==> %d\n", cmd->input->keyboard);
-			if (cmd->input->filename)
-				printf("input (filename) ==> %s\n", cmd->input->filename);
-			else
-				printf("input (filename) ==> NULL\n");
-			if (cmd->input->heredoc)
-			{
-				printf("input (heredoc) ==> ");
-				print_strings(cmd->input->heredoc);
-			}
-			else
-				printf("input (heredoc) ==> NULL\n");
+			if (redir->infile)
+				printf("infile => %s\n", redir->infile);
+
+			if (redir->heredoc)
+				printf("heredoc => %s\n", redir->heredoc);
 		}
-		else
-			printf("input == NULL\n");
+
 	}
 }
 

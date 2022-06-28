@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:39:47 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 17:12:11 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/06/26 16:16:40 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "error.h"
 #include <stdlib.h>
 
-static int	ft_char_type(char c)
+static int	ft_is_metachar(char c)
 {
 	if (c == '|')
 		return (PIPE);
@@ -23,16 +23,12 @@ static int	ft_char_type(char c)
 		return (LESS);
 	if (c == '>')
 		return (GREAT);
-	if (c == '\'')
-		return (S_QUOTE);
-	if (c == '"')
-		return (D_QUOTE);
 	if (c == ' ' || c == '\t')
 		return (ESCAPE_TAB);
 	return (0);
 }
 
-static int	ft_token_word(t_list **tokens, char *line, int len, int quote)
+static int	ft_token_word(t_list **tokens, char *line, int len)
 {
 	char	*dup;
 	int		i;
@@ -47,14 +43,14 @@ static int	ft_token_word(t_list **tokens, char *line, int len, int quote)
 		i++;
 	}
 	dup[i] = '\0';
-	return (ft_new_token(tokens, WORD, dup, quote));
+	return (ft_new_token(tokens, WORD, dup));
 }
 
 static int	ft_token_meta(t_list **tokens, int code)
 {
 	t_list	*last;
 
-	if (code == ESCAPE_TAB || code == S_QUOTE || code == D_QUOTE)
+	if (code == ESCAPE_TAB)
 		return (1);
 	last = ft_lstlast(*tokens);
 	if (last)
@@ -70,20 +66,7 @@ static int	ft_token_meta(t_list **tokens, int code)
 			return (1);
 		}
 	}
-	return (ft_new_token(tokens, code, NULL, 0));
-}
-
-int	ft_token_quote(t_list **tokens, char *line, int quote, int *ind)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] && ft_char_type(line[i]) != quote)
-		i++;
-	if (!line[i])
-		return (ft_puterror(0, "minishell: syntax error quote unclosed\n"));
-	*ind += (i + 1);
-	return (ft_token_word(tokens, line, i, quote));
+	return (ft_new_token(tokens, code, NULL));
 }
 
 int	ft_create_tokens(t_list **tokens, char *line)
@@ -96,13 +79,10 @@ int	ft_create_tokens(t_list **tokens, char *line)
 	r = 0;
 	while (line[i])
 	{
-		code = ft_char_type(line[i]);
+		code = ft_is_metachar(line[i]);
 		if (code != 0)
 		{
-			if (r < i && ft_token_word(tokens, line + r, i - r, 0) == 0)
-				return (ft_clear_tokens(tokens, 0));
-			if ((code == S_QUOTE || code == D_QUOTE)
-				&& ft_token_quote(tokens, line + i + 1, code, &i) == 0)
+			if (r < i && ft_token_word(tokens, line + r, i - r) == 0)
 				return (ft_clear_tokens(tokens, 0));
 			if (ft_token_meta(tokens, code) == 0)
 				return (ft_clear_tokens(tokens, 0));
@@ -110,7 +90,7 @@ int	ft_create_tokens(t_list **tokens, char *line)
 		}
 		i++;
 	}
-	if (r < i && ft_token_word(tokens, line + r, i - r, 0) == 0)
+	if (r < i && ft_token_word(tokens, line + r, i - r) == 0)
 		return (ft_clear_tokens(tokens, 0));
 	return (1);
 }

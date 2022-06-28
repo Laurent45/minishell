@@ -1,11 +1,12 @@
 
 SRCS			= $(addprefix srcs/, main.c error.c ${COMMAND} ${STRUCT} ${TOKEN} ${ENV} ${PRINT}) 
 
-COMMAND			= $(addprefix command/, command.c redirection.c execute.c)
+COMMAND			= $(addprefix command/, command.c)
 STRUCT			= $(addprefix struct/, create.c clear.c delete.c)
 TOKEN			= $(addprefix token/, token.c check.c)
-HEADERS			= $(addprefix headers/, error.h token.h struct.h command.h print.h)
+HEADERS			= $(addprefix headers/, error.h token.h struct.h command.h print.h execution.h)
 ENV				= $(addprefix env/, env.c)
+EXECUTION		= $(addprefix execution/, exit.c stream.c)
 
 PRINT			= $(addprefix print/, print.c)
 
