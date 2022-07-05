@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/22 17:39:17 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 15:49:03 by lfrederi         ###   ########.fr       */
+/*   Created: 2022/06/12 19:10:10 by lfrederi          #+#    #+#             */
+/*   Updated: 2022/07/05 14:59:24 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-#include "command.h"
-#include <signal.h>
+#include "struct.h"
 #include <stdlib.h>
-#include "error.h"
 
-extern t_list *envs;
-
-void ft_exit(t_list **commands, char **envp, char **args, int ret)
+void	ft_del_env(void	*content)
 {
-	if (envp)
-		free(envp);
-	if (args)
-		free(args);
-	ft_clear_env(&envs, 0);
-	ft_clear_commands(commands, 0);
-	exit(ret);
+	free(((t_env *) content)->var);
+	free(content);
 }
 
+int	ft_clear_env(t_list **env, int ret)
+{
+	ft_lstclear(env, &ft_del_env);
+	return (ret);
+}

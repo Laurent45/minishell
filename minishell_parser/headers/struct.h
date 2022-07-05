@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/26 17:26:57 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/05 14:49:08 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define STRUCT_H
 
 # include "ft_lst.h"
+
+# define INFILE		1
+# define OUTFILE	2
+# define APPENDFILE	3
+# define HEREDOC	4
+
 
 typedef struct s_env
 {
@@ -29,17 +35,15 @@ typedef struct s_token
 
 typedef struct	s_redir
 {
-	char	*outfile;
-	char	*appendfile;
-	char	*infile;
-	char	*heredoc;
+	int		code;
+	char	*file;
+	t_list	*heredoc;	// Content is char *
 }	t_redir;
 
 typedef struct s_command
 {
 	int				id;
-	char			*cmd;
-	t_list			*args;		// Content is char *
+	t_list			*cmd_args;		// Content is char *
 	t_list			*redir;		// Content is t_redir
 	t_list			*env_var;	// Content is char *
 }	t_command;
@@ -56,12 +60,10 @@ int		ft_new_env(t_env **env, char *var, int globale);
 /**
  *
  */
-int		ft_new_token(t_list **tokens, int code, char *word);
 
 /**
  *
  */
-int		ft_new_command(t_command **command);
 
 /**
  *
@@ -76,12 +78,10 @@ int		ft_new_command(t_command **command);
 /**
  *
  */
-int		ft_new_node(t_list **node, void *content);
 
 /**
  *
  */
-int		ft_new_redir(t_redir **redir, int code, char *str);
 
 /******************************************************************************/
 /*	DELETE
@@ -90,7 +90,6 @@ int		ft_new_redir(t_redir **redir, int code, char *str);
 /**
  *
  */
-void	ft_del_token(void *token);
 
 /**
  *
@@ -110,7 +109,6 @@ void	ft_del_str(void	*content);
 /**
  *
  */
-void	ft_del_command(void *command);
 
 /**
  *
@@ -124,12 +122,10 @@ void	ft_del_env(void *content);
 /**
  *
  */
-int		ft_clear_tokens(t_list **tokens, int ret);
 
 /**
  *
  */
-int		ft_clear_commands(t_list **commands, int ret);
 
 /**
  *

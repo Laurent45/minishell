@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/22 17:39:17 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 15:49:03 by lfrederi         ###   ########.fr       */
+/*   Created: 2022/07/05 14:55:07 by lfrederi          #+#    #+#             */
+/*   Updated: 2022/07/05 14:59:04 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-#include "command.h"
-#include <signal.h>
-#include <stdlib.h>
+#include "env.h"
 #include "error.h"
+#include <stdlib.h>
 
-extern t_list *envs;
-
-void ft_exit(t_list **commands, char **envp, char **args, int ret)
+int	ft_new_env(t_env **env, char *var, int globale)
 {
-	if (envp)
-		free(envp);
-	if (args)
-		free(args);
-	ft_clear_env(&envs, 0);
-	ft_clear_commands(commands, 0);
-	exit(ret);
+	*env = (t_env *) malloc(sizeof(t_env));
+	if (!(*env))
+	{
+		free(var);
+		return (ft_allocated_err(0, "t_env * in ft_new_env"));
+	}
+	(*env)->var = var;
+	(*env)->globale = globale;
+	return (1);
 }
-

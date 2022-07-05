@@ -6,14 +6,14 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:33:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 16:53:08 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/05 14:53:20 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_H
 # define TOKEN_H
 
-# include "ft_lst.h"
+# include "struct.h"
 
 # define WORD		1 
 # define GREAT		2
@@ -35,5 +35,25 @@ int		ft_create_tokens(t_list **tokens, char *prompt);
  *
  */
 int		ft_check_tokens(t_list **tokens);
+
+/**
+ *
+ */
+int		ft_new_token(t_list **tokens, int code, char *word);
+
+/**
+ *
+ */
+int		ft_new_token(t_list **tokens, int code, char *word);
+
+/**
+ *
+ */
+
+void	ft_del_token(void *token);
+/**
+ *
+ */
+int		ft_clear_tokens(t_list **tokens, int ret);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 19:13:51 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/26 17:35:17 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/01 21:30:44 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,23 @@ void	print_command(t_list *commands)
 	{
 		t_command *cmd = (t_command *) commands->content;
 
-		printf("cmd --> %s\n", cmd->cmd);
-
 		printf("env_var  --> ");
 		print_args(cmd->env_var);
 
-		printf("args  --> ");
-		print_args(cmd->args);
+		printf("cmd and args  --> ");
+		print_args(cmd->cmd_args);
 
 		for (; cmd->redir; cmd->redir = cmd->redir->next)
 		{
 			t_redir *redir = (t_redir *) cmd->redir->content;
-			if (redir->outfile)
-				printf("outfile => %s\n", redir->outfile);
-			if (redir->appendfile)
-				printf("appendfile => %s\n", redir->appendfile);
-
-			if (redir->infile)
-				printf("infile => %s\n", redir->infile);
-
+			printf("redir code => %d\n", redir->code);
+			if (redir->file)
+				printf("file => %s\n", redir->file);
 			if (redir->heredoc)
-				printf("heredoc => %s\n", redir->heredoc);
+			{
+				printf("heredoc => ");
+				print_args(redir->heredoc);
+			}
 		}
 
 	}

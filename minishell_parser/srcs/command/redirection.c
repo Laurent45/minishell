@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:37:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 16:45:44 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/05 15:15:07 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,81 +18,65 @@
 #include "token.h"
 #include "error.h"
 
-static int	ft_heredoc(t_command *command, char *str)
+int	ft_new_node(t_list **node, void *content)
+{
+	*node = ft_lstnew(content);
+	if (!(*node))
+		return (0);
+	return (1);
+}
+
+static int	ft_heredoc(t_list **heredoc, char *end)
 {
 	char	*line;
-	t_list	*node;
+	t_list	*node_str;
 
 	write(1, "> ", 2);
 	line = get_next_line(0);
 	if (!line)
-		return (ft_allocated_err(0, "get_next_line"));
+		return (ft_allocated_err(0, "get_next_line in ft_heredoc"));
 	while (line)
 	{
-		if (ft_strncmp(line, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(line, end, ft_strlen(end)) == 0)
 		{
 			free(line);
 			return (1);
 		}
-		if (ft_new_node(&node, line) == 0)
+		if (ft_new_node(&node_str, line) == 0)
 		{
 			free(line);
+			ft_lstclear(heredoc, &ft_del_str);
 			return (ft_allocated_err(0, "node in ft_heredoc"));
 		}
-		ft_lstadd_back(&(command->input->heredoc), node);
+		ft_lstadd_back(heredoc, node_str);
 		write(1, "> ", 2);
 		line = get_next_line(0);
 	}
 	return (1);
 }
 
-int	ft_input(t_command *command, int code, char *str)
+int	ft_new_redir(t_redir **redir, int code, char *str)
 {
-	t_input		*in;
+	int	ret;
 
-	if (command->input == NULL && ft_new_input(&command->input) == 0)
+	*redir = (t_redir *) malloc(sizeof(t_redir));
+	if (!(*redir))
 		return (0);
-	in = command->input;
-	if (in->filename)
+	(*redir)->file = NULL;
+	(*redir)->heredoc = NULL;
+	if (code == LESSLESS)
 	{
-		free(in->filename);
-		in->filename = NULL;
+		(*redir)->code = HEREDOC;
+		ret = ft_heredoc(&(*redir)->heredoc, str);
+		free(str);
+		return (ret);
 	}
-	if (in->heredoc)
-		ft_lstclear(&(command->input->heredoc), &ft_del_str);
 	if (code == LESS)
-	{
-		in->keyboard = 0;
-		in->filename = ft_strdup(str);
-		if (!in->filename)
-			return (ft_allocated_err(0, "ft_strdup in ft_input"));
-	}
-	else
-	{
-		in->keyboard = 1;
-		return (ft_heredoc(command, str));
-	}
-	return (1);
-}
-
-int	ft_output(t_command *command, int code, char *str)
-{
-	t_output	*out;
-
-	if (command->output == NULL && ft_new_output(&command->output) == 0)
-		return (0);
-	out = command->output;
-	if (out->filename)
-	{
-		free(out->filename);
-		out->filename = NULL;
-	}
-	out->filename = ft_strdup(str);
-	if (!out->filename)
-		return (ft_allocated_err(0, "ft_strdup in ft_output"));
-	if (code == GREATGREAT)
-		out->append = 1;
-	else
-		out->append = 0;
+		(*redir)->code = INFILE;
+	else if (code == GREAT)
+		(*redir)->code = OUTFILE;
+	else if (code == GREATGREAT)
+		(*redir)->code = APPENDFILE;
+	(*redir)->file = str;
 	return (1);
 }
