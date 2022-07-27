@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:39:47 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/26 16:16:40 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/13 09:46:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	ft_is_metachar(char c)
 		return (GREAT);
 	if (c == ' ' || c == '\t')
 		return (ESCAPE_TAB);
-	return (0);
+	return (NOT_META);
 }
 
 static int	ft_token_word(t_list **tokens, char *line, int len)
@@ -51,19 +51,19 @@ static int	ft_token_meta(t_list **tokens, int code)
 	t_list	*last;
 
 	if (code == ESCAPE_TAB)
-		return (1);
+		return (TOK_SUCCESS);
 	last = ft_lstlast(*tokens);
 	if (last)
 	{
 		if (((t_token *) last->content)->code == GREAT && code == GREAT)
 		{
 			((t_token *) last->content)->code = GREATGREAT;
-			return (1);
+			return (TOK_SUCCESS);
 		}
 		if (((t_token *) last->content)->code == LESS && code == LESS)
 		{
 			((t_token *) last->content)->code = LESSLESS;
-			return (1);
+			return (TOK_SUCCESS);
 		}
 	}
 	return (ft_new_token(tokens, code, NULL));
@@ -80,17 +80,17 @@ int	ft_create_tokens(t_list **tokens, char *line)
 	while (line[i])
 	{
 		code = ft_is_metachar(line[i]);
-		if (code != 0)
+		if (code != NOT_META)
 		{
-			if (r < i && ft_token_word(tokens, line + r, i - r) == 0)
-				return (ft_clear_tokens(tokens, 0));
-			if (ft_token_meta(tokens, code) == 0)
-				return (ft_clear_tokens(tokens, 0));
+			if (r < i && ft_token_word(tokens, line + r, i - r) == TOK_FAILED)
+				return (ft_clear_tokens(tokens, TOK_FAILED));
+			if (ft_token_meta(tokens, code) == TOK_FAILED)
+				return (ft_clear_tokens(tokens, TOK_FAILED));
 			r = i + 1;
 		}
 		i++;
 	}
-	if (r < i && ft_token_word(tokens, line + r, i - r) == 0)
-		return (ft_clear_tokens(tokens, 0));
-	return (1);
+	if (r < i && ft_token_word(tokens, line + r, i - r) == TOK_FAILED)
+		return (ft_clear_tokens(tokens, TOK_FAILED));
+	return (TOK_SUCCESS);
 }

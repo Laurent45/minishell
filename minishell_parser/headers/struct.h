@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 14:49:08 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/17 11:02:32 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ typedef struct s_env
 	int		globale;
 }	t_env;
 
+typedef struct s_built
+{
+	char	*func;
+	int		(*f)(t_list *args);
+}	t_built;
+
 typedef struct s_token
 {
 	int		code;
@@ -42,7 +48,8 @@ typedef struct	s_redir
 
 typedef struct s_command
 {
-	int				id;
+	int				pid;
+	int				num;
 	t_list			*cmd_args;		// Content is char *
 	t_list			*redir;		// Content is t_redir
 	t_list			*env_var;	// Content is char *

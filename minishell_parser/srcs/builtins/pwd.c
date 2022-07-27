@@ -1,41 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 13:51:00 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 10:46:16 by lfrederi         ###   ########.fr       */
+/*   Created: 2022/05/23 21:27:07 by lfrederi          #+#    #+#             */
+/*   Updated: 2022/07/17 11:10:31 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <stddef.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <ft_lst.h>
 
-
-int	main(int argc, char *argv[], char **envp)
+int	ft_pwd(t_list *args)
 {
-	(void) argc;
-	(void) argv;
+	(void) args;
+	char	*pwd;
 
-	char *cmd[] = {"/bin/cat", "Makefile", NULL};
-	char *cmd1[] = {"/bin/grep", "srcs", NULL};
-	//char *cmd2[] = {"/bin/cat", NULL};
-	//char *cmd3[] = {"/bin/rev", NULL};
-	char **cmds[] = {cmd, cmd1, NULL};
-
-	int id = fork();
-	if (id == 0)
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
 	{
-		ft_exec(cmds, envp);
+		perror("getcwd");
 		return (0);
 	}
-
-	char buff[181] = {0};
-	read(0, buff, 180);
-	printf("%s", buff);
-
-	return (0);
+	printf("%s\n", pwd);
+	free(pwd);
+	return (1);
 }
+

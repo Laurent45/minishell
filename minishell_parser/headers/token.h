@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:33:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 14:53:20 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/13 09:44:37 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define TOKEN_H
 
 # include "struct.h"
+
+# define TOK_FAILED		-1
+# define TOK_SUCCESS	0
 
 # define WORD		1 
 # define GREAT		2
@@ -24,6 +27,7 @@
 # define S_QUOTE	7
 # define D_QUOTE	8
 # define ESCAPE_TAB	9
+# define NOT_META	10
 
 
 /**

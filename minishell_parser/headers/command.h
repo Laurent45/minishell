@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:16 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 15:45:33 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/15 15:18:05 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 
 # include "struct.h"
 
-/**
- *
- */
-int	ft_new_command(t_command **command);
+# define CMD_SUCCESS	1
+# define CMD_FAILED		0
 
 /**
  *
  */
-int	ft_parse_to_command(t_list **commands, t_list *tokens);
+int	ft_new_command(t_command **command, int id);
+
+/**
+ *
+ */
+int	ft_parse_to_command(t_list **commands, t_list *tokens, int i);
 
 /**
  *

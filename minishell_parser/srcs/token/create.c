@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:27:14 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 12:35:56 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/13 09:44:47 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	ft_new_token(t_list **tokens, int code, char *word)
 
 	token = (t_token *) malloc(sizeof(t_token));
 	if (!token)
-		return (ft_allocated_err(0, "t_token * in ft_new_token"));
+		return (ft_allocated_err(TOK_FAILED, "t_token * in ft_new_token"));
 	token->code = code;
 	token->word = word;
 	node = ft_lstnew((void *) token);
 	if (!node)
 	{
 		ft_del_token((void *) token);
-		return (ft_allocated_err(0, "node in ft_new_token"));
+		return (ft_allocated_err(TOK_FAILED, "node in ft_new_token"));
 	}
 	ft_lstadd_back(tokens, node);
-	return (1);
+	return (TOK_SUCCESS);
 }

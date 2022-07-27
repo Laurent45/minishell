@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:46:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/14 17:09:51 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/12 14:21:45 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_check_tokens(t_list **tokens)
 	t_list	*token;
 
 	token = *tokens;
-	if (((t_token *) token->content)->code != WORD)
+	if (((t_token *) token->content)->code == PIPE)
 	{
 		ft_puterror(0, "minishell: syntax error\n");
 		return (ft_clear_tokens(tokens, 0));

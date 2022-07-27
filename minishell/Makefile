@@ -1,0 +1,54 @@
+
+SRCS			= $(addprefix srcs/, main.c ${COMMAND} ${STRUCT} ${TOKEN}\
+				  ${ENV} ${PRINT} ${EXECUTION} ${BUILTINS} ${EXPANSION} ${ERROR} ${SIGNAL}) 
+
+COMMAND			= $(addprefix command/, create.c set_redir.c clear.c parse.c)
+TOKEN			= $(addprefix token/, parse.c token.c utils.c check.c quote.c clear.c)
+ENV				= $(addprefix env/, clone.c clear.c add_envvar.c get_env.c)
+EXECUTION		= $(addprefix execution/, execute.c wait.c redirection.c assignement.c search_exe.c run_exe.c child.c)
+BUILTINS		= $(addprefix builtins/, $(addprefix functions/, cd.c echo.c pwd.c env.c exit.c export.c unset.c) init.c)
+EXPANSION		= $(addprefix expansion/, expand.c trim.c expand_cmdargs.c expansion.c)
+ERROR			= $(addprefix error/, error.c)
+SIGNAL			= $(addprefix signal/, signal.c)
+
+PRINT			= $(addprefix print/, print.c)
+
+HEADERS			= $(addprefix headers/, builtins.h env.h error.h token.h struct.h\
+				  command.h print.h execution.h expansion.h signal_handler.h)
+
+OBJS			= ${SRCS:.c=.o}
+
+NAME			= minishell
+
+CC				= gcc
+RM				= rm -f
+CFLAGS			= -Wall -Wextra -Werror -g
+
+P_HEADERS		= headers/
+P_LIBFT			= libft/
+P_LIBFT_H		= libft/headers/
+
+%.o: %.c ${HEADERS} 
+		${CC} ${CFLAGS}\
+		-I${P_HEADERS} -I${P_LIBFT_H}\
+		-c $< -o ${<:.c=.o}
+
+all: libft_make ${NAME}
+
+${NAME}: ${OBJS} 
+	${CC} ${CFLAGS} ${OBJS} -L${P_LIBFT} -lft -lreadline -o ${NAME}
+
+libft_make:
+	@make -C libft/
+libft_clean:
+	@make fclean -C libft/
+	
+clean:
+		${RM} ${OBJS} 
+
+fclean:	clean libft_clean
+		${RM} ${NAME} 
+
+re:		fclean all
+
+.PHONY: all clean fclean re

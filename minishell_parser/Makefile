@@ -1,12 +1,16 @@
 
-SRCS			= $(addprefix srcs/, main.c error.c ${COMMAND} ${STRUCT} ${TOKEN} ${ENV} ${PRINT} ${EXECUTION}) 
+SRCS			= $(addprefix srcs/, main.c ${COMMAND} ${STRUCT} ${TOKEN}\
+				  ${ENV} ${PRINT} ${EXECUTION} ${BUILTINS} ${EXPANSION} ${ERROR}) 
 
-COMMAND			= $(addprefix command/, command.c create.c redirection.c clear.c)
+COMMAND			= $(addprefix command/, create.c redirection.c clear.c parse.c)
 STRUCT			= $(addprefix struct/, delete.c)
 TOKEN			= $(addprefix token/, parse.c create.c clear.c check.c)
 HEADERS			= $(addprefix headers/, error.h token.h struct.h command.h print.h execution.h)
-ENV				= $(addprefix env/, env.c create.c clear.c)
-EXECUTION		= $(addprefix execution/, execute.c stream.c exit.c)
+ENV				= $(addprefix env/, create.c clear.c env.c)
+EXECUTION		= $(addprefix execution/, execute.c stream.c exit.c child.c failed.c simple_cmd/execute.c utils.c)
+BUILTINS		= $(addprefix builtins/, init.c cd.c echo.c env.c exit.c export.c pwd.c unset.c)
+EXPANSION		= $(addprefix expansion/, expand.c trim.c expand_cmdargs.c)
+ERROR			= $(addprefix error/, error.c)
 
 PRINT			= $(addprefix print/, print.c)
 
@@ -30,7 +34,7 @@ P_LIBFT_H		= libft/headers/
 all: libft_make ${NAME}
 
 ${NAME}: ${OBJS} 
-	${CC} ${CFLAGS} ${OBJS} -L${P_LIBFT} -lft -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} -L${P_LIBFT} -lft -lreadline -o ${NAME}
 
 libft_make:
 	@make -C libft/

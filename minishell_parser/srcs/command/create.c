@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:42:21 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 14:43:05 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/13 10:30:20 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #include "error.h"
 #include <stdlib.h>
 
-int	ft_new_command(t_command **command)
+int	ft_new_command(t_command **command, int num)
 {
 	*command = (t_command *) malloc(sizeof(t_command));
 	if (!(*command))
-		return (ft_allocated_err(0, "t_command * in ft_new_command"));
-	(*command)->id = 0;
+		return (ft_allocated_err(CMD_FAILED, "t_command * in ft_new_command"));
+	(*command)->pid = 0;
+	(*command)->num = num;
 	(*command)->cmd_args = NULL;
 	(*command)->redir = NULL;
 	(*command)->env_var = NULL;
-	return (1);
+	return (CMD_SUCCESS);
 }

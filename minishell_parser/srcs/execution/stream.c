@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:14:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/05 16:16:22 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/07 18:58:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "ft_string.h"
 #include <unistd.h>
 #include <fcntl.h>
+
+#include <stdio.h>
 
 int	ft_set_stdin(t_redir *redir)
 {
@@ -71,9 +73,11 @@ int	ft_redirection(t_command *cmd)
 	while (node_redir)
 	{
 		redir = (t_redir *) node_redir->content;
-		if ((redir->code == INFILE || redir->code == HEREDOC)\
-				&& ft_set_stdin(redir) == 0)
-			return (0);
+		if (redir->code == INFILE || redir->code == HEREDOC)
+		{
+			if (ft_set_stdin(redir) == 0)
+				return (0);
+		}
 		else
 		{
 			if (ft_set_stdout(redir) == 0)
@@ -82,28 +86,4 @@ int	ft_redirection(t_command *cmd)
 		node_redir = node_redir->next;
 	}
 	return (1);
-}
-
-int	ft_set_stream(t_list **commands, int pid, int pipe[2], t_list *node_command)
-{
-	if (pid == 0)
-	{
-		if (node_command->next)
-			dup2(pipe[1], 1);
-		close(pipe[0]);
-		close(pipe[1]);
-		if (ft_redirection((t_command *) node_command->content) == 0)
-			ft_exit(commands, NULL, NULL, -1);
-		return (1);
-	}
-	else
-	{
-		if (node_command->next)
-			dup2(pipe[0], 0);
-		else
-			close(0);
-		close(pipe[0]);
-		close(pipe[1]);
-		return (1);
-	}
 }

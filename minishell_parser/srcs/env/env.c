@@ -6,57 +6,56 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 10:49:50 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/06/18 17:25:13 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/17 16:51:52 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "env.h"
 #include "ft_string.h"
-#include <stdlib.h>
 
-int	ft_clone_env(t_list **envs, char *envp[])
+extern	t_list *envs;
+
+static int	ft_strlenvar(char *var)
 {
-	t_list		*node;
-	t_env		*env;
-	char		*var;
-	int			globale;
-	int			i;
+	int i;
 
 	i = 0;
-	while (envp[i])
-	{
-		var = ft_strdup(envp[i]);
-		if (!var)
-			return (ft_clear_env(envs, 0));
-		globale = 1;
-		if (var[0] == '_')
-			globale = 0;
-		if (ft_new_env(&env, var, globale) == 0)
-			return (ft_clear_env(envs, 0));
-		node = ft_lstnew((void *) env);
-		if (!node)
-			return (ft_clear_env(envs, 0));
-		ft_lstadd_back(envs, node);
+	while (var[i] && var[i] != '=')
 		i++;
+	return (i);
+}
+
+int	ft_get_envvar(char *varname, char **value)
+{
+	t_list	*tmp_envs;
+	int		lenvarname;
+	char	*env_var;
+
+	tmp_envs = envs;
+	while (tmp_envs)
+	{
+		env_var = (char *) ((t_env *) tmp_envs->content)->var;
+		lenvarname = ft_strlenvar(env_var);
+		if ((int) ft_strlen(varname) > lenvarname)
+			lenvarname = ft_strlen(varname);
+		if (ft_strncmp(env_var, varname, lenvarname) == 0)
+		{
+			*value = ft_strdup(env_var + lenvarname + 1);
+			if (!(*value))
+				return (0);
+			return (1);
+		}
+		tmp_envs = tmp_envs->next;
 	}
+	*value = (char *) malloc(sizeof(char));
+	if (!(*value))
+		return (0);
+	*value[0] = '\0';
 	return (1);
 }
 
-t_list	*ft_get_by_name(t_list *env, const char *varname)
-{
-	int	len;
-
-	len = ft_strlen(varname);
-	while (env)
-	{
-		if (ft_strncmp(((t_env *) env->content)->var, varname, len) == 0)
-			return (env);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-int	ft_set_value(t_list *envs, const char *varname, const char *value)
+/*int	ft_set_value(const char *varname, const char *value)
 {
 	t_list		*node;
 	t_env		*env;
@@ -78,4 +77,4 @@ int	ft_set_value(t_list *envs, const char *varname, const char *value)
 	ft_strlcat(env->var, "=", 1);
 	ft_strlcat(env->var, value, len_val);
 	return (1);
-}
+}*/
