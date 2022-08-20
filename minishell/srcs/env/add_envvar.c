@@ -6,11 +6,12 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 11:09:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/30 18:48:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "error.h"
 #include "ft_string.h"
 
 #include <stdlib.h>
@@ -57,4 +58,21 @@ int	ft_add_envvar(char *envvar, int globale)
 		return (1);
 	}
 	return (ft_push_env(dup, globale));
+}
+
+void	ft_add_existatus(int exitstatus)
+{
+	char	*itoa_exit;
+	char	*envvar;
+
+	itoa_exit = ft_itoa(exitstatus);
+	if (!itoa_exit)
+		ft_puterror(0, "failed while saving exit status");
+	envvar = ft_strjoin("?=", itoa_exit);
+	free(itoa_exit);
+	if (!envvar)
+		ft_puterror(0, "failed while saving exit status");
+	if (ft_add_envvar(envvar, 0) == 0)
+		ft_puterror(0, "failed while saving exit status");
+	free(envvar);
 }

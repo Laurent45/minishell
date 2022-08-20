@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 13:02:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:49:04 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:57:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,10 @@ int	ft_run_executable(t_command *command)
 		if (!envp)
 			return (free(args), 1);
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execve(args[0], args, envp);
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		free(args);
 		free(envp);
 		return (ft_perror(127, "execve"));

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:44:22 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/22 16:07:08 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/31 15:36:53 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	ft_del_redir(void *redir)
 {
 	t_redir	*rd;
 
+	if (!redir)
+		return ;
 	rd = (t_redir *) redir;
 	if (rd->file)
 		free(rd->file);
@@ -32,7 +34,7 @@ void	ft_del_redir(void *redir)
 	free(rd);
 }
 
-void	ft_del_command(void	*command)
+void	ft_del_cmd(void	*command)
 {
 	t_command	*cmd;
 
@@ -49,8 +51,8 @@ void	ft_del_command(void	*command)
 	free(command);
 }
 
-int	ft_clear_commands(t_list **commands, int ret)
+int	ft_clear_cmds(t_list **commands, int ret)
 {
-	ft_lstclear(commands, &ft_del_command);
+	ft_lstclear(commands, &ft_del_cmd);
 	return (ret);
 }

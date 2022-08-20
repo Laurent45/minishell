@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:14:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:51:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/31 16:27:09 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	ft_heredoc(t_redir *redir)
 	while (hdoc)
 	{
 		write(fd, (char *) hdoc->content, ft_strlen((char *) hdoc->content));
+		write(fd, "\n", 1);
 		hdoc = hdoc->next;
 	}
 	close(fd);

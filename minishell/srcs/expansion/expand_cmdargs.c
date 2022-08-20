@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 15:59:21 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/23 18:28:45 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:26:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,21 @@ int	ft_expand_cmdargs(t_list **cmd_args)
 	t_list	*tmp_cmdargs;
 	char	*expand;
 	char	**split;
+	char	sep;
 
 	new_cmdargs = NULL;
 	tmp_cmdargs = *cmd_args;
+	sep = ' ';
 	while (tmp_cmdargs)
 	{
 		expand = ft_expand_trim((char *) tmp_cmdargs->content);
 		if (expand == NULL)
 			return (ft_lstclear(&new_cmdargs, &ft_del_str), 0);
-		split = ft_split(expand, ' ');
+		if (new_cmdargs)
+			sep = '\0';
+		split = ft_split(expand, sep);
 		free(expand);
-		if (split == NULL)
-			return (ft_lstclear(&new_cmdargs, &ft_del_str), 0);
-		if (ft_split_expand(split, &new_cmdargs) == 0)
+		if (split == NULL || ft_split_expand(split, &new_cmdargs) == 0)
 			return (ft_lstclear(&new_cmdargs, &ft_del_str), 0);
 		tmp_cmdargs = tmp_cmdargs->next;
 	}

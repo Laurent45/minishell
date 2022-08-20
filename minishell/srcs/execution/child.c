@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:54:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:47:50 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/31 14:53:28 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ extern t_list	*g_envs;
 static void	ft_exit(t_list **commands, int ret)
 {
 	ft_clear_env(&g_envs, 0);
-	ft_clear_commands(commands, 0);
+	ft_clear_cmds(commands, 0);
 	rl_clear_history();
 	exit(ret);
 }

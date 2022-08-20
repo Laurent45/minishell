@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:55:07 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/26 15:48:00 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/20 10:20:43 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_new_env(t_env **env, char *var, int globale)
 	if (!(*env))
 	{
 		free(var);
-		return (ft_allocated_err(ENV_FAILED, "t_env * in ft_new_env"));
+		return (ft_puterror(ENV_FAILED, "t_env * in ft_new_env"));
 	}
 	(*env)->var = var;
 	(*env)->globale = globale;
@@ -53,5 +53,6 @@ int	ft_clone_env(t_list **envs, char *envp[])
 		ft_lstadd_back(envs, node_env);
 		i++;
 	}
+	ft_add_existatus(0);
 	return (ENV_SUCCESS);
 }

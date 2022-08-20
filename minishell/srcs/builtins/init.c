@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 16:55:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:59:07 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:07:07 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,4 @@ t_built	*ft_isbuiltins(t_list *cmd_args, t_built *builts)
 		i++;
 	}
 	return (NULL);
-}
-
-int	ft_run_builtins(t_built *built, t_command *command)
-{
-	int	tmp_stdin;
-	int	tmp_stdout;
-	int	status;
-
-	tmp_stdin = dup(STDIN_FILENO);
-	if (tmp_stdin == -1)
-		return (ft_perror(REDIR_FAILED, "dup"));
-	tmp_stdout = dup(STDOUT_FILENO);
-	if (tmp_stdout == -1)
-	{
-		close(tmp_stdin);
-		return (ft_perror(REDIR_FAILED, "dup"));
-	}
-	if (ft_redirection(command) == REDIR_FAILED)
-	{
-		dup2(tmp_stdin, 0);
-		dup2(tmp_stdout, 1);
-		return (REDIR_FAILED);
-	}
-	status = built->f(command->cmd_args);
-	dup2(tmp_stdin, 0);
-	dup2(tmp_stdout, 1);
-	return (status);
 }

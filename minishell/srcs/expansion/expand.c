@@ -6,7 +6,7 @@
 /*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:37:42 by rigel             #+#    #+#             */
-/*   Updated: 2022/07/27 16:58:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:18:00 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static int	tmp_alloc(char *str, char **new, int anch, int i)
 	char	*tmp;
 	char	*tmp2;
 
-	if (str[i + 1] == '\0')
-		tmp = ft_substr(str, (unsigned int)anch, (size_t)(i - anch + 1));
-	else
-		tmp = ft_substr(str, (unsigned int)anch, (size_t)(i - anch));
+	tmp = ft_substr(str, (unsigned int)anch, (size_t)(i - anch));
 	if (!tmp)
 		return (0);
 	tmp2 = ft_strjoin(*new, tmp);
@@ -65,16 +62,24 @@ static int	dollar_alloc(char *str, char **new, int *anch, int *i)
 	return (1);
 }
 
-static int	quote_expand(char *str, int *i, int test)
+static int	quote_expand(char *str, int *i, int isexpand, int *quote)
 {
 	int	code;
 
-	if ((is_it(str[*i]) == S_QUOTE || is_it(str[*i]) == D_QUOTE) && test == 2)
+	if (is_it(str[*i]) == D_QUOTE)
+	{
+		if (*quote)
+			*quote = 0;
+		else
+			*quote = 1;
+	}
+	if (is_it(str[*i]) == S_QUOTE && isexpand == 0 && *quote == 0)
 	{
 		code = is_it(str[*i]);
 		*i = *i + 1;
 		while (str[*i] && is_it(str[*i]) != code)
 			*i = *i + 1;
+		*i = *i + 1;
 		return (0);
 	}
 	return (1);
@@ -102,21 +107,17 @@ char	*ft_expand(char *str, int isexpand, int i)
 {
 	int		anch;
 	char	*new;
+	int		quote;
 
 	new = malloc(sizeof(char));
 	if (!new)
 		return (NULL);
 	new[0] = '\0';
 	anch = 0;
+	quote = 0;
 	while (str[i])
 	{
-		if (str[i + 1] == '\0')
-		{
-			if (!tmp_alloc(str, &new, anch, i))
-				return (free(new), NULL);
-			return (new);
-		}
-		if (!quote_expand(str, &i, isexpand))
+		if (!quote_expand(str, &i, isexpand, &quote))
 			continue ;
 		if (!(dollar_case(str, &new, &i, &anch)))
 			continue ;
@@ -124,5 +125,7 @@ char	*ft_expand(char *str, int isexpand, int i)
 			return (free(new), NULL);
 		i++;
 	}
+	if (!tmp_alloc(str, &new, anch, i))
+		return (free(new), NULL);
 	return (new);
 }

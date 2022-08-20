@@ -6,12 +6,11 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 19:35:11 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:50:04 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 08:22:57 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
-#include "print.h"
 #include "error.h"
 #include "ft_string.h"
 #include "execution.h"

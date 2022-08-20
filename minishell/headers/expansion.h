@@ -6,14 +6,14 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 16:26:23 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/23 19:07:13 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/31 16:14:02 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANSION_H
 # define EXPANSION_H
 
-#include "struct.h"
+# include "struct.h"
 
 /**
  *

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 15:48:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/23 23:06:26 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:53:45 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ char	*ft_expand_trim(char *value)
 {
 	char	*expand;
 
-	if (ft_strchr(value, '\''))
-		expand = ft_expand(value, 2, 0);
-	else
-		expand = ft_expand(value, 1, 0);
+	expand = ft_expand(value, 0, 0);
 	if (!expand)
 		return (NULL);
 	expand = ft_trim_quote(expand);

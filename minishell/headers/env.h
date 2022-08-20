@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 17:21:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/26 19:23:26 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/29 09:03:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int		ft_new_env(t_env **env, char *var, int globale);
  *
  */
 int		ft_add_envvar(char *envvar, int globale);
+
+/**
+ *
+ */
+void	ft_add_existatus(int exitstatus);
 
 /**
  *

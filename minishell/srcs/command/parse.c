@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/25 21:33:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/07/31 16:11:57 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,54 +18,50 @@
 
 #include <stdlib.h>
 
-static int	ft_word(t_command *command, char *word)
+static int	ft_tokword(t_command *t_cmd, char *tok_word)
 {
-	char	*dup;
+	char	*dup_tok_word;
 	t_list	*node_str;
 
-	dup = ft_strdup(word);
-	if (!dup)
-		return (ft_allocated_err(CMD_FAILED, "char * in ft_word"));
-	if (ft_new_node(&node_str, (void *) dup) == CMD_FAILED)
+	dup_tok_word = ft_strdup(tok_word);
+	if (!dup_tok_word)
+		return (ft_puterror(CMD_FAILED, "char * in ft_word"));
+	if (ft_new_node(&node_str, (void *) dup_tok_word) == CMD_FAILED)
 	{
-		free(dup);
-		return (ft_allocated_err(CMD_FAILED, "node in ft_word"));
+		free(dup_tok_word);
+		return (ft_puterror(CMD_FAILED, "node in ft_word"));
 	}
-	if (ft_strchr(dup, '=') && command->cmd_args == NULL \
-			&& (dup[0] == '_' || ft_isalpha(dup[0]) != 0))
-		ft_lstadd_back(&command->env_var, node_str);
+	if (ft_strchr(dup_tok_word, '=') && t_cmd->cmd_args == NULL \
+			&& (dup_tok_word[0] == '_' || ft_isalpha(dup_tok_word[0]) != 0))
+		ft_lstadd_back(&t_cmd->env_var, node_str);
 	else
-		ft_lstadd_back(&command->cmd_args, node_str);
+		ft_lstadd_back(&t_cmd->cmd_args, node_str);
 	return (CMD_SUCCESS);
 }
 
-static int	ft_redir(t_command *command, int code, char *word)
+static int	ft_tokredir(t_command *command, int code, char *tok_word)
 {
-	char	*dup;
+	char	*dup_tok_word;
 	t_redir	*redir;
 	t_list	*node_redir;
 
 	redir = NULL;
 	node_redir = NULL;
-	dup = ft_strdup(word);
-	if (!dup)
-		return (ft_allocated_err(CMD_FAILED, "char * in t_redir"));
-	if (ft_new_redir(&redir, code, dup) == 0)
-	{
-		if (redir)
-			free(redir);
-		return (free(dup), CMD_FAILED);
-	}
+	dup_tok_word = ft_strdup(tok_word);
+	if (!dup_tok_word)
+		return (ft_puterror(CMD_FAILED, "char * in t_redir"));
+	if (ft_redir(&redir, code, dup_tok_word) == 0)
+		return (ft_del_redir(redir), CMD_FAILED);
 	if (ft_new_node(&node_redir, (void *) redir) == CMD_FAILED)
 	{
 		ft_lstclear(&command->redir, &ft_del_redir);
-		return (ft_allocated_err(CMD_FAILED, "node in ft_redir"));
+		return (ft_puterror(CMD_FAILED, "node in ft_redir"));
 	}
 	ft_lstadd_back(&command->redir, node_redir);
 	return (CMD_SUCCESS);
 }
 
-static int	ft_set_command(t_list **tokens, t_command *command)
+static int	ft_set_command(t_list **tokens, t_command *t_cmd)
 {
 	t_list	*node_token;
 	int		code;
@@ -73,33 +69,32 @@ static int	ft_set_command(t_list **tokens, t_command *command)
 	node_token = *tokens;
 	code = ((t_token *) node_token->content)->code;
 	if (code == WORD)
-		return (ft_word(command, (((t_token *) node_token->content)->str)));
+		return (ft_tokword(t_cmd, (((t_token *) node_token->content)->str)));
 	*tokens = (*tokens)->next;
 	node_token = *tokens;
-	return (ft_redir(command, code, ((t_token *) node_token->content)->str));
+	return (ft_tokredir(t_cmd, code, ((t_token *) node_token->content)->str));
 }
 
-int	ft_parse_to_command(t_list **commands, t_list *tokens, int i)
+int	ft_parse_to_command(t_list **cmds, t_list *tokens, int i)
 {
-	t_command	*command;
-	t_list		*node_command;
+	t_command	*t_cmd;
+	t_list		*node_cmd;
 
 	while (tokens)
 	{
-		if (ft_new_command(&command, i) == CMD_FAILED)
-			return (ft_clear_commands(commands, CMD_FAILED));
+		if (ft_new_command(&t_cmd, i) == CMD_FAILED)
+			return (ft_clear_cmds(cmds, CMD_FAILED));
 		i++;
-		if (ft_new_node(&node_command, (void *) command) == CMD_FAILED)
+		if (ft_new_node(&node_cmd, (void *) t_cmd) == CMD_FAILED)
 		{
-			ft_del_command((void *) command);
-			ft_allocated_err(CMD_FAILED, "node in ft_create_command");
-			return (ft_clear_commands(commands, CMD_FAILED));
+			ft_puterror(CMD_FAILED, "error new node in ft_create_command");
+			return (ft_del_cmd((void *) t_cmd), ft_clear_cmds(cmds, 0));
 		}
-		ft_lstadd_back(commands, node_command);
+		ft_lstadd_back(cmds, node_cmd);
 		while (tokens && ((t_token *) tokens->content)->code != PIPE)
 		{
-			if (ft_set_command(&tokens, command) == CMD_FAILED)
-				return (ft_clear_commands(commands, CMD_FAILED));
+			if (ft_set_command(&tokens, t_cmd) == CMD_FAILED)
+				return (ft_clear_cmds(cmds, CMD_FAILED));
 			tokens = tokens->next;
 		}
 		if (tokens)
