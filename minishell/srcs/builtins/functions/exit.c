@@ -6,13 +6,14 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 22:36:17 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/20 11:05:27 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/08/20 11:26:09 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "error.h"
 #include "env.h"
+#include <ft_string.h>
 
 #include <stdio.h>
 
@@ -47,6 +48,8 @@ static int	ft_islong(char *str)
 
 int	ft_exit_built(t_list *args)
 {
+	long	status;
+
 	printf("exit\n");
 	if (args->next == NULL)
 	{
@@ -60,6 +63,7 @@ int	ft_exit_built(t_list *args)
 	}
 	if (ft_lstsize(args) > 2)
 		return (ft_puterror(1, "exit: too many args"));
-	ft_add_existatus(123);
+	status = (unsigned long) ft_atol((char *) args->next->content);
+	ft_add_existatus(status % 256);
 	return (EXIT_BUILT);
 }
