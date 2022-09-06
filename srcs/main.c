@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:14:12 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/20 11:47:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/06 15:25:06 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	ft_run_shell(char *prompt, t_built *builts)
 	free(prompt);
 	if (!tokens)
 		return (0);
-	if (ft_check_tokens(&tokens) == 0)
+	if (ft_check_tokens(&tokens) != 1)
 		return (ft_clear_tokens(&tokens, 0));
 	if (ft_parse_to_command(&commands, tokens, 0) == 0)
 		return (ft_clear_tokens(&tokens, 0));
