@@ -1,17 +1,18 @@
 
-SRCS			= $(addprefix srcs/, main.c ${COMMAND} ${STRUCT} ${TOKEN}\
+SRCS			= $(addprefix srcs/, main.c ${INIT} ${COMMAND} ${STRUCT} ${TOKEN}\
 				  ${ENV} ${EXECUTION} ${BUILTINS} ${EXPANSION} ${ERROR} ${SIGNAL}) 
 
+INIT			= $(addprefix init/, init.c)
 COMMAND			= $(addprefix command/, create.c redir.c heredoc.c clear.c parse.c)
 TOKEN			= $(addprefix token/, parse.c token.c utils.c check.c quote.c clear.c)
 ENV				= $(addprefix env/, clone.c clear.c add_envvar.c get_env.c)
 EXECUTION		= $(addprefix execution/, execute.c wait.c redirection.c assignement.c search_exe.c run_exe.c child.c)
-BUILTINS		= $(addprefix builtins/, $(addprefix functions/, cd.c echo.c pwd.c env.c exit.c export.c unset.c) init.c run_builtin.c)
+BUILTINS		= $(addprefix builtins/, $(addprefix functions/, cd.c echo.c pwd.c env.c exit.c export.c unset.c) run_builtin.c is_builtins.c)
 EXPANSION		= $(addprefix expansion/, expand.c trim.c expand_cmdargs.c expansion.c)
 ERROR			= $(addprefix error/, error.c)
 SIGNAL			= $(addprefix signal/, signal.c)
 
-HEADERS			= $(addprefix headers/, builtins.h env.h error.h token.h struct.h\
+HEADERS			= $(addprefix headers/, init.h builtins.h env.h error.h token.h struct.h\
 				  command.h execution.h expansion.h signal_handler.h)
 
 OBJS			= ${SRCS:.c=.o}

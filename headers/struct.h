@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/31 16:14:33 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:15:10 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define STRUCT_H
 
 # include "ft_lst.h"
+
+# define SUCCESS	0
+# define FAILED		1
 
 # define INFILE		1
 # define OUTFILE	2

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:14:12 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/06 15:25:06 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:13:27 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "env.h"
 #include "signal_handler.h"
 #include "ft_string.h"
+#include "init.h"
 
 #include <unistd.h>
 #include <readline/readline.h>
@@ -87,6 +88,7 @@ static int	ft_return_status(void)
 
 int	main(int argc, char *argv[], char *envp[])
 {
+	t_list	*clone_env;
 	t_built	builts[NB_BUILT + 1];
 	char	*prompt;
 	int		exit;
@@ -95,9 +97,8 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) argv;
 	(void) argc;
 	signal(SIGQUIT, SIG_IGN);
-	if (ft_clone_env(&g_envs, envp) == ENV_FAILED)
+	if (init_shell(envp, &clone_env, builts) == FAILED)
 		return (-1);
-	ft_init_built(builts);
 	exit = 0;
 	while (1 && exit == 0)
 	{

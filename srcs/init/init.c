@@ -5,18 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/15 16:55:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/18 19:07:07 by lfrederi         ###   ########.fr       */
+/*   Created: 2022/09/07 09:27:47 by lfrederi          #+#    #+#             */
+/*   Updated: 2022/09/07 09:51:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "ft_string.h"
-#include "execution.h"
-#include "error.h"
-
+#include "init.h"
 #include <stddef.h>
-#include <unistd.h>
 
 void	ft_init_built(t_built *builts)
 {
@@ -38,18 +33,10 @@ void	ft_init_built(t_built *builts)
 	builts[7].f = NULL;
 }
 
-t_built	*ft_isbuiltins(t_list *cmd_args, t_built *builts)
+int	init_shell(char *envp[], t_list **clone_env, t_built *builts)
 {
-	int	i;
-
-	if (cmd_args == NULL)
-		return (NULL);
-	i = 0;
-	while (builts[i].func)
-	{
-		if (ft_strcmp(builts[i].func, (char *) cmd_args->content) == 0)
-			return (&builts[i]);
-		i++;
-	}
-	return (NULL);
+	if (ft_clone_env(clone_env, envp) == FAILED)
+		return (FAILED);
+	ft_init_built(builts);
+	return (SUCCESS);
 }
