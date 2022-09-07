@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:46:46 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 09:52:06 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:14:25 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "builtins.h"
 # include "env.h"
+
+# define GREEN_ARROW	"\033[1;32m➜  \033[0m"
+# define RED_ARROW		"\033[1;31m➜  \033[0m"
+# define PROMPT			"\002\033[1;36m\003minishell\002\033[0m\003 $ "
 
 /**
  *

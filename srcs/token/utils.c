@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 22:42:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:45:47 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 11:31:14 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <stdlib.h>
 
-int	is_alphanum(char c)
+int	ft_is_alphanum(char c)
 {
 	if (c >= 'a' && c <= 'z')
 		return (1);
@@ -46,14 +46,14 @@ int	is_meta(char c)
 
 int	is_it(char c)
 {
-	if (is_alphanum(c))
-		return (is_alphanum(c));
+	if (ft_is_alphanum(c))
+		return (ft_is_alphanum(c));
 	if (is_meta(c))
 		return (is_meta(c));
 	return (0);
 }
 
-void	ft_del(void *tok)
+void	del(void *tok)
 {
 	free(((t_token *)tok)->str);
 	free(tok);

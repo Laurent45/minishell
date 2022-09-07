@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 17:21:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/29 09:03:58 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 21:09:20 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,53 +15,49 @@
 
 # include "struct.h"
 
-# define ENV_FAILED			-1
-# define ENV_SUCCESS		0
-# define ASSIGNEMENT_FAILED	1
+/**
+ *
+ */
+int		clone_env(t_list **my_envp, char *envp[]);
 
 /**
  *
  */
-int		ft_clone_env(t_list **envs, char *envp[]);
+int		new_env(t_env **env, char *var, int globale);
 
 /**
  *
  */
-int		ft_new_env(t_env **env, char *var, int globale);
+int		add_envvar(t_list **my_envp, char *envvar, int globale);
 
 /**
  *
  */
-int		ft_add_envvar(char *envvar, int globale);
+void	add_existatus(int exitstatus);
 
 /**
  *
  */
-void	ft_add_existatus(int exitstatus);
+char	*getenv_value(t_list *my_envp, char *varname);
 
 /**
  *
  */
-char	*ft_getenv_value(char *varname);
+t_env	*get_env(t_list *my_envp, char *varname);
 
 /**
  *
  */
-t_env	*ft_getenv(char *varname);
+int		strlenvar(char *var);
 
 /**
  *
  */
-int		ft_strlenvar(char *var);
+void	del_env(void	*content);
 
 /**
  *
  */
-void	ft_del_env(void	*content);
-
-/**
- *
- */
-int		ft_clear_env(t_list **env, int ret);
+int		clear_env(t_list **env, int ret);
 
 #endif

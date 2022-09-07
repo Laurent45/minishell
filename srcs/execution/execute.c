@@ -6,13 +6,13 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 19:35:11 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/18 08:22:57 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 23:23:16 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "error.h"
-#include "ft_string.h"
+#include "string.h"
 #include "execution.h"
 #include "expansion.h"
 #include "builtins.h"
@@ -23,7 +23,7 @@
 #include <fcntl.h>
 #include <signal.h>
 
-static int	ft_pipefd_parent(int tmpin, int pipe_fd[2])
+static int	pipefd_parent(int tmpin, int pipe_fd[2])
 {
 	if (tmpin != -1)
 		close(tmpin);
@@ -31,7 +31,7 @@ static int	ft_pipefd_parent(int tmpin, int pipe_fd[2])
 	return (pipe_fd[0]);
 }
 
-static int	ft_failed(t_list *node_command, char *func, int ret, int pipe[2])
+static int	failed(t_list *node_command, char *func, int ret, int pipe[2])
 {
 	t_command	*command;
 
@@ -52,7 +52,7 @@ static int	ft_failed(t_list *node_command, char *func, int ret, int pipe[2])
 	return (ret);
 }
 
-static int	ft_pipeline(t_list **commands, t_built *builts)
+static int	pipeline(t_list **commands, t_built *builts, t_list **my_envp)
 {
 	t_list		*cmd;
 	int			tmpin;
@@ -63,49 +63,50 @@ static int	ft_pipeline(t_list **commands, t_built *builts)
 	while (cmd)
 	{
 		if (pipe(pipe_fd) == -1)
-			return (ft_failed(*commands, "pipe", 1, NULL));
+			return (failed(*commands, "pipe", 1, NULL));
 		((t_command *) cmd->content)->pid = fork();
 		if (((t_command *) cmd->content)->pid == -1)
-			return (ft_failed(*commands, "fork", 1, pipe_fd));
+			return (failed(*commands, "fork", 1, pipe_fd));
 		if (((t_command *) cmd->content)->pid != 0)
-			tmpin = ft_pipefd_parent(tmpin, pipe_fd);
+			tmpin = pipefd_parent(tmpin, pipe_fd);
 		else
 		{
-			ft_child_std(commands, cmd, pipe_fd, tmpin);
-			ft_child_pipeline(commands, cmd->content, builts);
+			if (child_std(cmd, pipe_fd, tmpin) == FAILED)
+				exit_clear(commands, my_envp, 1);
+			child_pipeline(commands, cmd->content, builts, my_envp);
 		}
 		cmd = cmd->next;
 	}
 	close(tmpin);
-	return (ft_wait_child(*commands));
+	return (wait_child(*commands));
 }
 
-static int	ft_simple_cmd(t_list **commands, t_built *builts)
+static int	simple_cmd(t_list **commands, t_built *builts, t_list **my_envp)
 {
 	int			id;
 	t_command	*cmd;
 	t_built		*built;
 
-	cmd = (t_command *)(*commands)->content;
-	if (ft_expand_cmdargs(&cmd->cmd_args) == 0)
-		return (EXPAND_FAILED);
-	built = ft_isbuiltins(cmd->cmd_args, builts);
+	cmd = (t_command *) (*commands)->content;
+	if (expand_cmdargs(&cmd->cmd_args, *my_envp) == FAILED)
+		return (FAILED);
+	built = isbuiltins(cmd->cmd_args, builts);
 	if (built)
-		return (ft_run_builtins(built, cmd));
-	if (cmd->cmd_args == NULL && ft_assignement(cmd->env_var, 0) == 0)
-		return (ASSIGNEMENT_FAILED);
+		return (run_builtins(built, cmd, my_envp));
+	if (cmd->cmd_args == NULL && assignement(my_envp, cmd->env_var, 0) == FAILED)
+		return (FAILED);
 	id = fork();
 	cmd->pid = id;
 	if (id == -1)
-		return (ft_perror(1, "fork"));
+		return (ft_perror(FAILED, "fork"));
 	if (id == 0)
-		ft_child_simple_cmd(commands);
-	return (ft_wait_child(*commands));
+		child_simple_cmd(commands, my_envp);
+	return (wait_child(*commands));
 }
 
-int	ft_execute(t_list **commands, t_built *builts)
+int	execute(t_list **commands, t_built *builts, t_list **my_envp)
 {
 	if (ft_lstsize(*commands) == 1)
-		return (ft_simple_cmd(commands, builts));
-	return (ft_pipeline(commands, builts));
+		return (simple_cmd(commands, builts, my_envp));
+	return (pipeline(commands, builts, my_envp));
 }

@@ -6,7 +6,7 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 21:01:11 by llepiney          #+#    #+#             */
-/*   Updated: 2022/07/22 16:44:43 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:59:53 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 int	tok_alloc_err(t_list **tokens)
 {
-	ft_lstclear(tokens, &ft_del);
+	ft_lstclear(tokens, &del);
 	printf("Token allocation error.\n");
 	return (0);
 }

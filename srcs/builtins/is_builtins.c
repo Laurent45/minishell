@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "ft_string.h"
+#include "string.h"
 
 #include <stddef.h>
 
-t_built	*ft_isbuiltins(t_list *cmd_args, t_built *builts)
+t_built	*isbuiltins(t_list *cmd_args, t_built *builts)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ t_built	*ft_isbuiltins(t_list *cmd_args, t_built *builts)
 	i = 0;
 	while (builts[i].func)
 	{
-		if (ft_strcmp(builts[i].func, (char *) cmd_args->content) == 0)
+		if (strcmp(builts[i].func, (char *) cmd_args->content) == 0)
 			return (&builts[i]);
 		i++;
 	}

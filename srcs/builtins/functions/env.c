@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:00:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 17:00:36 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:29:30 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,23 @@
 
 #include <unistd.h>
 
-extern t_list	*g_envs;
-
-int	ft_env(t_list *args)
+int	built_env(t_list *args, t_list **my_envp)
 {
-	t_list	*envs;
 	t_env	*env;
+	t_list	*tmp_envp;
 
 	if (ft_lstsize(args) != 1)
-		return (ft_puterror(2, "env: options and arguments are not allow"));
-	envs = g_envs;
-	while (envs)
+		return (puterror(2, "env: options and arguments are not allow"));
+	tmp_envp = *my_envp;
+	while (tmp_envp)
 	{
-		env = (t_env *) envs->content;
+		env = (t_env *) tmp_envp->content;
 		if (env->globale)
 		{
 			ft_putstr_fd(env->var, 1);
 			ft_putstr_fd("\n", 1);
 		}
-		envs = envs->next;
+		tmp_envp = tmp_envp->next;
 	}
 	return (0);
 }

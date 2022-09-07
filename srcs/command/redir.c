@@ -6,13 +6,13 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:37:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/31 15:29:26 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:10:36 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
-#include "ft_string.h"
-#include "ft_stdio.h"
+#include "string.h"
+#include "stdio.h"
 #include "expansion.h"
 #include "token.h"
 #include "error.h"
@@ -23,20 +23,12 @@
 #include <signal.h>
 #include <stdio.h>
 
-int	ft_new_node(t_list **node, void *content)
+int	set_redir(t_redir **redir, int tok_code, char *tok_word, t_list *my_envp)
 {
-	*node = ft_lstnew(content);
-	if (!(*node))
-		return (0);
-	return (1);
-}
-
-int	ft_redir(t_redir **redir, int tok_code, char *tok_word)
-{
-	if (ft_new_redir(redir) == 0)
-		return (free(tok_word), 0);
+	if (new_redir(redir) == FAILED)
+		return (free(tok_word), FAILED);
 	if (tok_code == LESSLESS)
-		return (ft_heredoc(*redir, tok_word));
+		return (heredoc(*redir, tok_word, my_envp));
 	if (tok_code == LESS)
 		(*redir)->code = INFILE;
 	else if (tok_code == GREAT)
@@ -44,5 +36,5 @@ int	ft_redir(t_redir **redir, int tok_code, char *tok_word)
 	else if (tok_code == GREATGREAT)
 		(*redir)->code = APPENDFILE;
 	(*redir)->file = tok_word;
-	return (1);
+	return (SUCCESS);
 }

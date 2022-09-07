@@ -6,11 +6,12 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 15:33:24 by llepiney          #+#    #+#             */
-/*   Updated: 2022/07/21 12:26:15 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:25:39 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
+
 #include <stdio.h>
 
 int	quote_detect(char *str, int *code)

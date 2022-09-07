@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:15:56 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/06 15:02:25 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:37:13 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
  *	Use perror function for print an error message with type given in parameter.
  *	Return the value ret;
  */
-int	ft_allocated_err(int ret, const char *type);
+int	allocated_err(int ret, const char *type);
 
 /**
  *
  */
-int	ft_puterror(int ret, char *message);
+int	puterror(int ret, char *message);
 
 /**
  *

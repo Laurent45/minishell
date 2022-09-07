@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 16:26:23 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/31 16:14:02 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:27:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@
 /**
  *
  */
-char	*ft_expand_trim(char *to_expand);
+char	*expand_trim(char *to_expand, t_list *my_envp);
 
 /**
  *
  */
-char	*ft_expand(char *str, int test, int i);
+char	*expand(t_list *my_envp, char *str, int test, int i);
 
 /**
  *
  */
-char	*ft_trim_quote(char *str);
+char	*trim_quote(char *str);
 
 /**
  *
  */
-int		ft_expand_cmdargs(t_list **cmd_args);
+int		expand_cmdargs(t_list **cmd_args, t_list *my_envp);
 
 #endif

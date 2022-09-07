@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:55:07 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/20 10:20:43 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:16:45 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@
 
 #include <stdlib.h>
 
-int	ft_new_env(t_env **env, char *var, int globale)
+int	new_env(t_env **env, char *var, int globale)
 {
 	*env = (t_env *) malloc(sizeof(t_env));
 	if (!(*env))
 	{
 		free(var);
-		return (ft_puterror(ENV_FAILED, "t_env * in ft_new_env"));
+		return (puterror(FAILED, "t_env * in new_env"));
 	}
 	(*env)->var = var;
 	(*env)->globale = globale;
-	return (ENV_SUCCESS);
+	return (SUCCESS);
 }
 
-int	ft_clone_env(t_list **envs, char *envp[])
+int	clone_env(t_list **envs, char *envp[])
 {
 	t_list		*node_env;
 	t_env		*env;
@@ -43,16 +43,15 @@ int	ft_clone_env(t_list **envs, char *envp[])
 	{
 		var = ft_strdup(envp[i]);
 		if (!var)
-			return (ft_clear_env(envs, ENV_FAILED));
+			return (clear_env(envs, FAILED));
 		globale = 1;
-		if (ft_new_env(&env, var, globale) == ENV_FAILED)
-			return (ft_clear_env(envs, ENV_FAILED));
+		if (new_env(&env, var, globale) == FAILED)
+			return (clear_env(envs, FAILED));
 		node_env = ft_lstnew((void *) env);
 		if (!node_env)
-			return (ft_clear_env(envs, ENV_FAILED));
+			return (clear_env(envs, FAILED));
 		ft_lstadd_back(envs, node_env);
 		i++;
 	}
-	ft_add_existatus(0);
-	return (ENV_SUCCESS);
+	return (SUCCESS);
 }

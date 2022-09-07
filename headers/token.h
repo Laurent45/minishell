@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:33:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/31 16:08:48 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 11:24:19 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,22 @@ typedef enum e_token_kind
 /**
  *
  */
-int		ft_create_tokens(t_list **tokens, char *prompt, int i);
+int		create_tokens(t_list **tokens, char *prompt, int i);
 
 /**
  *
  */
-int		ft_check_tokens(t_list **tokens);
+int		check_tokens(t_list **tokens);
 
 /**
  *
  */
-int		ft_new_token(t_list **tokens, int code, char *word);
+int		new_token(t_list **tokens, int code, char *word);
 
 /**
  *
  */
-int		ft_new_token(t_list **tokens, int code, char *word);
+int		new_token(t_list **tokens, int code, char *word);
 
 /**
  *
@@ -62,12 +62,12 @@ int		unquote_case(char **arg, t_list **tokens, char **buff, int *state);
 /**
  *
  */
-void	ft_del(void *token);
+void	del(void *token);
 
 /**
  *
  */
-int		ft_clear_tokens(t_list **tokens, int ret);
+int		clear_tokens(t_list **tokens, int ret);
 
 /**
  *
@@ -78,7 +78,7 @@ int		meta_alloc(int code, int *state, char **arg, t_list **tokens);
 /**
  *
  */
-int		is_alphanum(char c);
+int		ft_is_alphanum(char c);
 
 /**
  *

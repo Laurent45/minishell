@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 19:10:00 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/18 18:57:18 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 23:20:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@
 #include <sys/stat.h>
 #include <readline/readline.h>
 
-static int	ft_issigint(void)
+static int	issigint(void)
 {
 	struct stat	statbuf;
 
 	if (fstat(0, &statbuf) != 0)
-		return (0);
-	return (1);
+		return (FAILED);
+	return (SUCCESS);
 }
 
-static char	*ft_read(void)
+static char	*heredoc_read(void)
 {
 	char	*line;
 
@@ -42,35 +42,35 @@ static char	*ft_read(void)
 	return (line);
 }
 
-static int	ft_get_line(t_list **heredoc, char *end, int quote)
+static int	get_line(t_list **heredoc, char *end, int quote, t_list *my_envp)
 {
 	char	*line;
-	char	*expand;
+	char	*str_expand;
 	t_list	*node_str;
 
-	line = ft_read();
+	line = heredoc_read();
 	while (line)
 	{
 		if (ft_strcmp(line, end) == 0)
-			return (free(line), 1);
+			return (free(line), SUCCESS);
 		if (quote == 0)
 		{
-			expand = ft_expand(line, 1, 0);
+			str_expand = expand(my_envp, line, 1, 0);
 			free(line);
-			if (expand == NULL)
-				return (ft_puterror(0, "expand in heredoc failed\n"));
-			line = expand;
+			if (str_expand == NULL)
+				return (puterror(FAILED, "expand in heredoc failed\n"));
+			line = str_expand;
 		}
-		if (ft_new_node(&node_str, line) == 0)
-			return (free(line), ft_puterror(0, "node in ft_heredoc"));
+		if (new_node(&node_str, line) == FAILED)
+			return (free(line), puterror(FAILED, "node in heredoc"));
 		ft_lstadd_back(heredoc, node_str);
-		line = ft_read();
+		line = heredoc_read();
 	}
 	printf("\n");
-	return (ft_issigint());
+	return (issigint());
 }
 
-int	ft_heredoc(t_redir *redir, char *tok_word)
+int	heredoc(t_redir *redir, char *tok_word, t_list *my_envp)
 {
 	int		quote;
 	char	*endword;
@@ -81,11 +81,11 @@ int	ft_heredoc(t_redir *redir, char *tok_word)
 	redir->code = HEREDOC;
 	if (ft_strchr(tok_word, '\'') || ft_strchr(tok_word, '\"'))
 		quote = 1;
-	endword = ft_trim_quote(tok_word);
+	endword = trim_quote(tok_word);
 	if (endword == NULL)
-		return (ft_puterror(0, "trim in heredoc failed\n"));
+		return (puterror(FAILED, "trim in heredoc failed\n"));
 	tmp_stdin = dup(0);
-	ret = ft_get_line(&(redir->heredoc), endword, quote);
+	ret = get_line(&(redir->heredoc), endword, quote, my_envp);
 	dup2(tmp_stdin, 0);
 	close(tmp_stdin);
 	return (free(endword), ret);

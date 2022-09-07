@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 18:00:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/27 16:52:25 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 21:10:50 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 #include <stdlib.h>
 
-extern t_list	*g_envs;
+extern int g_exit_status;
 
-int	ft_strlenvar(char *var)
+int	strlenvar(char *var)
 {
 	int	i;
 
@@ -27,25 +27,25 @@ int	ft_strlenvar(char *var)
 	return (i);
 }
 
-char	*ft_getenv_value(char *varname)
+char	*getenv_value(t_list *my_envp, char *varname)
 {
-	t_list	*envs;
 	int		len_varname;
 	int		len_currvar;
 	char	*env_var;
 	char	*ret;
 
-	envs = g_envs;
 	len_varname = ft_strlen(varname);
-	while (envs)
+	if (ft_strcmp(varname, "?") == 0)
+		return (ft_itoa(g_exit_status));
+	while (my_envp)
 	{
-		env_var = (char *)((t_env *) envs->content)->var;
-		len_currvar = ft_strlenvar(env_var);
+		env_var = (char *) ((t_env *) my_envp->content)->var;
+		len_currvar = strlenvar(env_var);
 		if (len_currvar < len_varname)
 			len_currvar = len_varname;
 		if (ft_strncmp(env_var, varname, len_currvar) == 0)
 			return (ft_strdup(env_var + len_varname + 1));
-		envs = envs->next;
+		my_envp = my_envp->next;
 	}
 	ret = (char *) malloc(sizeof(char));
 	if (!ret)
@@ -54,24 +54,22 @@ char	*ft_getenv_value(char *varname)
 	return (ret);
 }
 
-t_env	*ft_getenv(char *varname)
+t_env	*get_env(t_list *my_envp, char *varname)
 {
-	t_list	*envs;
 	int		len_varname;
 	int		len_currvar;
 	char	*env_var;
 
-	envs = g_envs;
 	len_varname = ft_strlen(varname);
-	while (envs)
+	while (my_envp)
 	{
-		env_var = (char *)((t_env *) envs->content)->var;
-		len_currvar = ft_strlenvar(env_var);
+		env_var = (char *)((t_env *) my_envp->content)->var;
+		len_currvar = strlenvar(env_var);
 		if (len_currvar < len_varname)
 			len_currvar = len_varname;
 		if (ft_strncmp(env_var, varname, len_currvar) == 0)
-			return ((t_env *) envs->content);
-		envs = envs->next;
+			return ((t_env *) my_envp->content);
+		my_envp = my_envp->next;
 	}
 	return (NULL);
 }

@@ -21,7 +21,7 @@ NAME			= minishell
 
 CC				= cc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g
 
 P_HEADERS		= headers/
 P_LIBFT			= libft/

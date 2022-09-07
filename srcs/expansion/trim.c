@@ -56,7 +56,7 @@ static int	trim_quote2(char *str, int *i, int *code)
 	return (1);
 }
 
-char	*ft_trim_quote(char *str)
+char	*trim_quote(char *str)
 {
 	int		i;
 	int		j;

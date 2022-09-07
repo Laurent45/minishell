@@ -6,18 +6,20 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 22:36:17 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/20 11:26:09 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:29:44 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "error.h"
 #include "env.h"
-#include <ft_string.h>
+#include "ft_string.h"
 
 #include <stdio.h>
 
-static int	ft_islong(char *str)
+extern int g_exit_status;
+
+static int	islong(char *str)
 {
 	int		i;
 	long	res;
@@ -46,24 +48,26 @@ static int	ft_islong(char *str)
 	return (1);
 }
 
-int	ft_exit_built(t_list *args)
+int	built_exit(t_list *args, t_list **my_envp)
 {
+	(void) my_envp;
+
 	long	status;
 
 	printf("exit\n");
 	if (args->next == NULL)
 	{
-		ft_add_existatus(0);
+		g_exit_status = 0;
 		return (EXIT_BUILT);
 	}
-	if (ft_islong((char *) args->next->content) == 0)
+	if (islong((char *) args->next->content) == 0)
 	{
-		ft_add_existatus(2);
-		return (ft_puterror(EXIT_BUILT, "exit: numeric argument required"));
+		g_exit_status = 2;
+		return (puterror(EXIT_BUILT, "exit: numeric argument required"));
 	}
 	if (ft_lstsize(args) > 2)
-		return (ft_puterror(1, "exit: too many args"));
+		return (puterror(FAILED, "exit: too many args"));
 	status = (unsigned long) ft_atol((char *) args->next->content);
-	ft_add_existatus(status % 256);
+	g_exit_status = status % 256;
 	return (EXIT_BUILT);
 }

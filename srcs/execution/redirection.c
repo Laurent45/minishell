@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:14:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/31 16:27:09 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 23:03:47 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-static int	ft_heredoc(t_redir *redir)
+static int	heredoc(t_redir *redir)
 {
 	int		fd;
 	t_list	*hdoc;
@@ -27,7 +27,7 @@ static int	ft_heredoc(t_redir *redir)
 	unlink("/tmp/_heredoc-minishell");
 	fd = open("/tmp/_heredoc-minishell", O_CREAT | O_RDWR, 0600);
 	if (fd == -1)
-		return (ft_perror(0, "open"));
+		return (ft_perror(FAILED, "open"));
 	hdoc = redir->heredoc;
 	while (hdoc)
 	{
@@ -38,60 +38,60 @@ static int	ft_heredoc(t_redir *redir)
 	close(fd);
 	fd = open("/tmp/_heredoc-minishell", O_RDONLY);
 	if (fd == -1)
-		return (ft_perror(0, "open"));
+		return (ft_perror(FAILED, "open"));
 	dup2(fd, 0);
 	close(fd);
-	return (1);
+	return (SUCCESS);
 }
 
-static int	ft_set_stdin(t_redir *redir)
+static int	set_stdin(t_redir *redir, t_list *my_envp)
 {
 	int		fd;
-	char	*expand_file;
+	char	*file_exp;
 
 	if (redir->code == INFILE)
 	{
-		expand_file = ft_expand_trim(redir->file);
-		if (expand_file == NULL)
-			return (ft_puterror(0, "expand in redirection failed\n"));
-		if (expand_file[0] == '\0' || ft_strchr(expand_file, ' ') != 0)
-			return (free(expand_file), ft_puterror(0, "ambiguous redirect\n"));
+		file_exp = expand_trim(redir->file, my_envp);
+		if (file_exp == NULL)
+			return (puterror(FAILED, "expand in redirection failed\n"));
+		if (file_exp[0] == '\0' || ft_strchr(file_exp, ' ') != 0)
+			return (free(file_exp), puterror(FAILED, "ambiguous redirect\n"));
 		free(redir->file);
-		redir->file = expand_file;
+		redir->file = file_exp;
 		fd = open(redir->file, O_RDONLY);
 		if (fd == -1)
-			return (ft_perror(0, "open"));
+			return (ft_perror(FAILED, "open"));
 		dup2(fd, 0);
 		close(fd);
-		return (1);
+		return (SUCCESS);
 	}
-	return (ft_heredoc(redir));
+	return (heredoc(redir));
 }
 
-static int	ft_set_stdout(t_redir *redir)
+static int	set_stdout(t_redir *redir, t_list *my_envp)
 {
 	int		fd;
-	char	*expand_file;
+	char	*file_exp;
 
-	expand_file = ft_expand_trim(redir->file);
-	if (expand_file == NULL)
-		return (ft_puterror(0, "expand in redirection failed\n"));
-	if (expand_file[0] == '\0' || ft_strchr(expand_file, ' ') != 0)
-		return (free(expand_file), ft_puterror(0, "ambiguous redirect\n"));
+	file_exp = expand_trim(redir->file, my_envp);
+	if (file_exp == NULL)
+		return (puterror(FAILED, "expand in redirection failed\n"));
+	if (file_exp[0] == '\0' || ft_strchr(file_exp, ' ') != 0)
+		return (free(file_exp), puterror(FAILED, "ambiguous redirect\n"));
 	free(redir->file);
-	redir->file = expand_file;
+	redir->file = file_exp;
 	if (redir->code == OUTFILE)
 		fd = open(redir->file, O_CREAT | O_TRUNC | O_WRONLY, 0664);
 	else
 		fd = open(redir->file, O_CREAT | O_APPEND | O_WRONLY, 0664);
 	if (fd == -1)
-		return (ft_perror(0, "open"));
+		return (ft_perror(FAILED, "open"));
 	dup2(fd, 1);
 	close(fd);
-	return (1);
+	return (SUCCESS);
 }
 
-int	ft_redirection(t_command *cmd)
+int	redirection(t_command *cmd, t_list *my_envp)
 {
 	t_list	*node_redir;
 	t_redir	*redir;
@@ -102,15 +102,15 @@ int	ft_redirection(t_command *cmd)
 		redir = (t_redir *) node_redir->content;
 		if (redir->code == INFILE || redir->code == HEREDOC)
 		{
-			if (ft_set_stdin(redir) == 0)
-				return (0);
+			if (set_stdin(redir, my_envp) == FAILED)
+				return (FAILED);
 		}
 		else
 		{
-			if (ft_set_stdout(redir) == 0)
-				return (0);
+			if (set_stdout(redir, my_envp) == FAILED)
+				return (FAILED);
 		}
 		node_redir = node_redir->next;
 	}
-	return (1);
+	return (SUCCESS);
 }

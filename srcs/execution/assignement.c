@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 12:02:39 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/30 09:46:21 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:54:59 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,31 @@
 
 extern t_list	*g_envs;
 
-int	ft_assignement(t_list *var, int globale)
+int	assignement(t_list **my_envp, t_list *var, int globale)
 {
 	int		equal;
 	char	*value_expand;
 	char	*varname;
-	char	*varname_value;
+	char	*name_value;
 
 	while (var)
 	{
 		equal = ft_strchr((char *) var->content, '=') - (char *) var->content;
-		value_expand = ft_expand_trim((char *) var->content + equal + 1);
+		value_expand = expand_trim((char *) var->content + equal + 1, *my_envp);
 		if (!value_expand)
-			return (ft_puterror(0, "assignement failed"));
+			return (puterror(FAILED, "assignement failed"));
 		varname = ft_substr((char *) var->content, 0, equal + 1);
 		if (!varname)
-			return (free(value_expand), ft_puterror(0, "assignement failed"));
-		varname_value = ft_strjoin(varname, value_expand);
+			return (free(value_expand), puterror(FAILED, "assignement failed"));
+		name_value = ft_strjoin(varname, value_expand);
 		free(value_expand);
 		free(varname);
-		if (!varname_value)
-			return (ft_puterror(0, "assignement failed"));
-		if (ft_add_envvar(varname_value, globale) == 0)
-			return (free(varname_value), ft_puterror(0, "assignement failed"));
-		free(varname_value);
+		if (!name_value)
+			return (puterror(FAILED, "assignement failed"));
+		if (add_envvar(my_envp, name_value, globale) == FAILED)
+			return (free(name_value), puterror(FAILED, "assignement failed"));
+		free(name_value);
 		var = var->next;
 	}
-	return (1);
+	return (SUCCESS);
 }

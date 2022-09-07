@@ -6,24 +6,24 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 15:48:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/18 18:53:45 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:26:08 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
-#include "ft_string.h"
+#include "string.h"
 
 #include <stddef.h>
 
-char	*ft_expand_trim(char *value)
+char	*expand_trim(char *value, t_list *my_envp)
 {
-	char	*expand;
+	char	*str_expand;
 
-	expand = ft_expand(value, 0, 0);
-	if (!expand)
+	str_expand = expand(my_envp, value, 0, 0);
+	if (!str_expand)
 		return (NULL);
-	expand = ft_trim_quote(expand);
-	if (!expand)
+	str_expand = trim_quote(str_expand);
+	if (!str_expand)
 		return (NULL);
-	return (expand);
+	return (str_expand);
 }

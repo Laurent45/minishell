@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:25:57 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/30 09:51:22 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:21:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-extern t_list	*g_envs;
-
-static void	ft_sort(t_list *l)
+static void	sort(t_list *l)
 {
 	t_list	*begin;
 	void	*tmp;
@@ -50,16 +48,14 @@ static void	ft_sort(t_list *l)
 	}
 }
 
-static int	ft_curr_lst(char r, t_list **lst)
+static int	curr_lst(t_list *my_envp, char r, t_list **lst)
 {
-	t_list		*envs;
 	t_list		*curr;
 	t_env		*env_var;
 
-	envs = g_envs;
-	while (envs)
+	while (my_envp)
 	{
-		env_var = (t_env *) envs->content;
+		env_var = (t_env *) my_envp->content;
 		if ((env_var->var)[0] == r && env_var->globale)
 		{
 			curr = ft_lstnew(env_var->var);
@@ -70,14 +66,14 @@ static int	ft_curr_lst(char r, t_list **lst)
 			}
 			ft_lstadd_back(lst, curr);
 		}
-		envs = envs->next;
+		my_envp = my_envp->next;
 	}
 	if (*lst)
-		ft_sort(*lst);
+		sort(*lst);
 	return (1);
 }
 
-static void	ft_print_env(t_list *lst)
+static void	print_env(t_list *lst)
 {
 	int		i;
 	int		j;
@@ -103,7 +99,7 @@ static void	ft_print_env(t_list *lst)
 	}
 }
 
-static int	ft_export_envvar(t_list *envvar)
+static int	export_envvar(t_list **my_envp, t_list *envvar)
 {
 	char	*curr_envvar;
 
@@ -111,31 +107,31 @@ static int	ft_export_envvar(t_list *envvar)
 	{
 		curr_envvar = (char *) envvar->content;
 		if (curr_envvar[0] != '_' && ft_isalpha(curr_envvar[0]) == 0)
-			ft_puterror(2, "export: not a valid identifier");
+			puterror(2, "export: not a valid identifier");
 		else
-			if (ft_add_envvar(curr_envvar, 1) == 0)
-				ft_puterror(2, "export failed");
+			if (add_envvar(my_envp, curr_envvar, 1) == 0)
+				puterror(2, "export failed");
 		envvar = envvar->next;
 	}
 	return (0);
 }
 
-int	ft_export(t_list *args)
+int	built_export(t_list *args, t_list **my_envp)
 {
 	char	c;
 	t_list	*lst;
 
 	if (ft_lstsize(args) > 1)
-		return (ft_export_envvar(args->next));
+		return (export_envvar(my_envp, args->next));
 	lst = NULL;
 	c = 'A';
 	while (c <= 'z')
 	{
-		if (ft_curr_lst(c, &lst) == 0)
+		if (curr_lst(*my_envp, c, &lst) == 0)
 			return (0);
 		if (lst)
 		{
-			ft_print_env(lst);
+			print_env(lst);
 			ft_lstclear(&lst, NULL);
 		}
 		c++;

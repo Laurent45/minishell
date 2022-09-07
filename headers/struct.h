@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 10:15:10 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:40:41 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_env
 typedef struct s_built
 {
 	char	*func;
-	int		(*f)(t_list *args);
+	int		(*f)(t_list *args, t_list **my_envp);
 }	t_built;
 
 typedef struct s_token

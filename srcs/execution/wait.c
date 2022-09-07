@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:28:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/07/23 23:09:10 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 11:03:52 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <sys/wait.h>
 
-int	ft_wait_child(t_list *command)
+int	wait_child(t_list *command)
 {
 	int	wstatus;
 	int	exitstatus;

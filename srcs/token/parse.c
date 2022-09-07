@@ -6,7 +6,7 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:33:30 by llepiney          #+#    #+#             */
-/*   Updated: 2022/07/20 22:40:12 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:20:04 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <stdlib.h>
 
-int	ft_create_tokens(t_list **tokens, char *prompt, int i)
+int	create_tokens(t_list **tokens, char *prompt, int i)
 {
 	int		state;
 	char	*buff;
@@ -36,8 +36,8 @@ int	ft_create_tokens(t_list **tokens, char *prompt, int i)
 			if (tmp == 0)
 				break ;
 			if (tmp == 2)
-				return (free(buff), 0);
+				return (free(buff), FAILED);
 		}
 	}
-	return (free(buff), 1);
+	return (free(buff), SUCCESS);
 }

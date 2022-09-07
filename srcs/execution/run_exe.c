@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 13:02:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/18 18:57:56 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:05:27 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-extern t_list	*g_envs;
-
-static char	**ft_args_to_array(t_list *lst)
+static char	**args_to_array(t_list *lst)
 {
 	int		size;
 	int		i;
@@ -40,7 +38,7 @@ static char	**ft_args_to_array(t_list *lst)
 	return (ret);
 }
 
-static int	ft_lstsize_globale(t_list *lst)
+static int	lstsize_globale(t_list *lst)
 {
 	int		size;
 	t_env	*env;
@@ -56,45 +54,45 @@ static int	ft_lstsize_globale(t_list *lst)
 	return (size);
 }
 
-static char	**ft_envs_to_array(t_list *lst)
+static char	**envs_to_array(t_list *my_envp)
 {
 	t_env	*env;
 	int		i;
 	int		size;
 	char	**ret;
 
-	size = ft_lstsize_globale(lst);
+	size = lstsize_globale(my_envp);
 	ret = (char **) malloc(sizeof(char *) * (size + 1));
 	if (!ret)
 		return (NULL);
 	i = 0;
-	while (lst)
+	while (my_envp)
 	{
-		env = (t_env *) lst->content;
+		env = (t_env *) my_envp->content;
 		if (env->globale)
 		{
 			ret[i] = env->var;
 			i++;
 		}
-		lst = lst->next;
+		my_envp = my_envp->next;
 	}
 	ret[i] = NULL;
 	return (ret);
 }
 
-int	ft_run_executable(t_command *command)
+int	run_executable(t_command *command, t_list **my_envp)
 {
 	int		status;
 	char	**args;
 	char	**envp;
 
-	status = ft_search_exe(command->cmd_args);
+	status = search_exe(command->cmd_args, *my_envp);
 	if (status == 0)
 	{
-		args = ft_args_to_array(command->cmd_args);
+		args = args_to_array(command->cmd_args);
 		if (!args)
 			return (1);
-		envp = ft_envs_to_array(g_envs);
+		envp = envs_to_array(*my_envp);
 		if (!envp)
 			return (free(args), 1);
 		signal(SIGINT, SIG_DFL);

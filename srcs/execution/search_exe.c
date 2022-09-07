@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:49:58 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/30 09:37:18 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:05:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int	ft_cmd_not_found(int ret, char *cmd)
+static int	cmd_not_found(int ret, char *cmd)
 {
 	if (ret == 127)
 		ft_putstr_fd("command not found: ", 2);
@@ -29,7 +29,7 @@ static int	ft_cmd_not_found(int ret, char *cmd)
 	return (ret);
 }
 
-static int	ft_access(char *path_exe, t_list *cmd)
+static int	call_access(char *path_exe, t_list *cmd)
 {
 	if (access(path_exe, F_OK) == 0)
 	{
@@ -40,13 +40,13 @@ static int	ft_access(char *path_exe, t_list *cmd)
 			return (0);
 		}
 		free(path_exe);
-		return (ft_cmd_not_found(126, (char *) cmd->content));
+		return (cmd_not_found(126, (char *) cmd->content));
 	}
 	free(path_exe);
 	return (1);
 }
 
-static int	ft_add_path(char **path, t_list *cmd)
+static int	add_path(char **path, t_list *cmd)
 {
 	int		i;
 	int		ret;
@@ -58,20 +58,20 @@ static int	ft_add_path(char **path, t_list *cmd)
 	{
 		tmp = ft_strjoin(path[i], "/");
 		if (!tmp)
-			return (ft_cmd_not_found(127, (char *) cmd->content));
+			return (cmd_not_found(127, (char *) cmd->content));
 		path_exe = ft_strjoin(tmp, (char *) cmd->content);
 		free(tmp);
 		if (!path_exe)
-			return (ft_cmd_not_found(127, (char *) cmd->content));
-		ret = ft_access(path_exe, cmd);
+			return (cmd_not_found(127, (char *) cmd->content));
+		ret = call_access(path_exe, cmd);
 		if (ret != 1)
 			return (ret);
 		i++;
 	}
-	return (ft_cmd_not_found(127, (char *) cmd->content));
+	return (cmd_not_found(127, (char *) cmd->content));
 }
 
-int	ft_search_exe(t_list *cmd)
+int	search_exe(t_list *cmd, t_list *my_envp)
 {
 	char	*path;
 	char	**split;
@@ -81,19 +81,19 @@ int	ft_search_exe(t_list *cmd)
 		return (0);
 	if (ft_strchr((char *) cmd->content, '/') == 0)
 	{
-		path = ft_getenv_value("PATH");
+		path = getenv_value(my_envp, "PATH");
 		if (!path || path[0] == '\0')
-			return (free(path), ft_cmd_not_found(127, (char *) cmd->content));
+			return (free(path), cmd_not_found(127, (char *) cmd->content));
 		split = ft_split(path, ':');
 		free(path);
 		if (split == NULL)
-			return (ft_cmd_not_found(127, (char *) cmd->content));
-		ret = ft_add_path(split, cmd);
+			return (cmd_not_found(127, (char *) cmd->content));
+		ret = add_path(split, cmd);
 		ft_clear_split(split);
 		return (ret);
 	}
 	if (access((char *) cmd->content, F_OK) == 0 \
 			&& access((char *) cmd->content, X_OK) != 0)
-		return (ft_cmd_not_found(126, (char *) cmd->content));
+		return (cmd_not_found(126, (char *) cmd->content));
 	return (0);
 }

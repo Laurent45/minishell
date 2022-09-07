@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/08/30 10:19:52 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:17:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,34 @@
 
 #include <stdlib.h>
 
-extern t_list	*g_envs;
-
-static int	ft_push_env(char *envvar, int globale)
+static int	push_env(t_list **my_envp, char *envvar, int globale)
 {
-	t_env	*new_env;
+	t_env	*env;
 	t_list	*node;
 
-	if (ft_new_env(&new_env, envvar, globale) == ENV_FAILED)
-		return (0);
+	if (new_env(&env, envvar, globale) == FAILED)
+		return (FAILED);
 	node = ft_lstnew((void *) new_env);
 	if (!node)
-		return (ft_del_env(new_env), 0);
-	ft_lstadd_back(&g_envs, node);
-	return (1);
+		return (del_env(env), FAILED);
+	ft_lstadd_back(my_envp, node);
+	return (SUCCESS);
 }
 
-int	ft_add_envvar(char *envvar, int globale)
+int	add_envvar(t_list **my_envp, char *envvar, int globale)
 {
 	t_env	*exist;
 	char	*dup;
 	char	*tmp;
 
-	tmp = ft_substr(envvar, 0, ft_strlenvar(envvar));
+	tmp = ft_substr(envvar, 0, strlenvar(envvar));
 	if (!tmp)
-		return (0);
-	exist = ft_getenv(tmp);
+		return (FAILED);
+	exist = get_env(*my_envp, tmp);
 	free(tmp);
 	dup = ft_strdup(envvar);
 	if (!dup)
-		return (0);
+		return (FAILED);
 	if (exist)
 	{
 		if (ft_strchr(dup, '='))
@@ -56,24 +54,24 @@ int	ft_add_envvar(char *envvar, int globale)
 		else
 			free(dup);
 		exist->globale = globale;
-		return (1);
+		return (SUCCESS);
 	}
-	return (ft_push_env(dup, globale));
+	return (push_env(my_envp, dup, globale));
 }
 
-void	ft_add_existatus(int exitstatus)
+/*void	add_existatus(int exitstatus)
 {
 	char	*itoa_exit;
 	char	*envvar;
 
 	itoa_exit = ft_itoa(exitstatus);
 	if (!itoa_exit)
-		ft_puterror(0, "failed while saving exit status");
+		puterror(0, "failed while saving exit status");
 	envvar = ft_strjoin("?=", itoa_exit);
 	free(itoa_exit);
 	if (!envvar)
-		ft_puterror(0, "failed while saving exit status");
-	if (ft_add_envvar(envvar, 0) == 0)
-		ft_puterror(0, "failed while saving exit status");
+		puterror(0, "failed while saving exit status");
+	if (add_envvar(envvar, 0) == 0)
+		puterror(0, "failed while saving exit status");
 	free(envvar);
-}
+}*/

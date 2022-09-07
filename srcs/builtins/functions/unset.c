@@ -6,7 +6,7 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:38:15 by llepiney          #+#    #+#             */
-/*   Updated: 2022/07/27 17:01:29 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/07 22:31:54 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,38 +19,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern t_list	*g_envs;
+extern int	g_exit_status; 
 
-void	ft_delenvvar(char *varname)
+void	delenvvar(t_list **my_envp, char *varname)
 {
-	t_list	*envs;
 	t_list	*before;
+	t_list	*tmp_envp;
 	int		len_varname;
 	int		len_currvar;
 
-	envs = g_envs;
 	before = NULL;
+	tmp_envp = *my_envp;
 	len_varname = ft_strlen(varname);
-	while (envs)
+	while (tmp_envp)
 	{
-		len_currvar = ft_strlenvar((char *)((t_env *) envs->content)->var);
+		len_currvar = strlenvar((char *)((t_env *) tmp_envp->content)->var);
 		if (len_currvar < len_varname)
 			len_currvar = len_varname;
-		if (ft_strncmp((char *)((t_env *) envs->content)->var, \
+		if (ft_strncmp((char *)((t_env *) tmp_envp->content)->var, \
 					varname, len_currvar) == 0)
 		{
 			if (before == NULL)
-				g_envs = envs->next;
+				*my_envp = tmp_envp->next;
 			else
-				before->next = envs->next;
-			return (ft_del_env((void *) envs->content), free(envs));
+				before->next = tmp_envp->next;
+			return (del_env((void *) tmp_envp->content), free(tmp_envp));
 		}
-		before = envs;
-		envs = envs->next;
+		before = tmp_envp;
+		tmp_envp = tmp_envp->next;
 	}
 }
 
-int	ft_unset(t_list *args)
+int	built_unset(t_list *args, t_list **my_envp)
 {
 	char	*varname;
 	int		ret;
@@ -63,10 +63,11 @@ int	ft_unset(t_list *args)
 		varname = (char *) args->content;
 		if ((varname[0] != '_' && ft_isalpha(varname[0]) == 0) \
 				|| ft_strchr(varname, '='))
-			ret = ft_puterror(1, "unset: not a valid identifier");
+			ret = puterror(1, "unset: not a valid identifier");
 		else
-			ft_delenvvar(varname);
+			delenvvar(my_envp, varname);
 		args = args->next;
 	}
-	return (ret);
+	g_exit_status = ret;
+	return (0);
 }
