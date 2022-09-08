@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:27:47 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:06:59 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:31:22 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 extern int	g_exit_status;
 
-void	init_built(t_built *builts)
+static void	init_built(t_built *builts)
 {
 	builts[0].func = "echo";
 	builts[0].f = &built_echo;
@@ -43,4 +43,9 @@ int	init_shell(char *envp[], t_list **my_envp, t_built *builts)
 	init_built(builts);
 	g_exit_status = 0;
 	return (SUCCESS);
+}
+
+void	set_status(int status)
+{
+	g_exit_status = status;
 }

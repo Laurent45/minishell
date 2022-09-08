@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 19:35:11 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 23:23:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:51:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	failed(t_list *node_command, char *func, int ret, int pipe[2])
 	return (ret);
 }
 
-static int	pipeline(t_list **commands, t_built *builts, t_list **my_envp)
+int	exe_pipeline(t_list **commands, t_built *builts, t_list **my_envp)
 {
 	t_list		*cmd;
 	int			tmpin;
@@ -81,7 +81,7 @@ static int	pipeline(t_list **commands, t_built *builts, t_list **my_envp)
 	return (wait_child(*commands));
 }
 
-static int	simple_cmd(t_list **commands, t_built *builts, t_list **my_envp)
+int	exe_simple_cmd(t_list **commands, t_built *builts, t_list **my_envp)
 {
 	int			id;
 	t_command	*cmd;
@@ -102,11 +102,4 @@ static int	simple_cmd(t_list **commands, t_built *builts, t_list **my_envp)
 	if (id == 0)
 		child_simple_cmd(commands, my_envp);
 	return (wait_child(*commands));
-}
-
-int	execute(t_list **commands, t_built *builts, t_list **my_envp)
-{
-	if (ft_lstsize(*commands) == 1)
-		return (simple_cmd(commands, builts, my_envp));
-	return (pipeline(commands, builts, my_envp));
 }

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:14:12 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 23:44:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:14:18 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,12 @@
 #include "execution.h"
 #include "builtins.h"
 #include "error.h"
-#include "env.h"
 #include "signal_handler.h"
-#include "string.h"
 #include "init.h"
 
-#include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <signal.h>
 
 int	g_exit_status;
@@ -41,14 +36,19 @@ static int	run_shell(char *prompt, t_built *builts, t_list **my_envp)
 		return (free(prompt), FAILED);
 	free(prompt);
 	if (!tokens)
-		return (FAILED);
+		return (SUCCESS);
 	if (check_tokens(&tokens) == FAILED)
 		return (clear_tokens(&tokens, FAILED));
-	if (parse_to_command(&commands, tokens, 0, *my_envp) == FAILED)
+	if (parse_to_command(&commands, tokens, *my_envp) == FAILED)
 		return (clear_tokens(&tokens, FAILED));
 	clear_tokens(&tokens, 0);
-	if (execute(&commands, builts, my_envp) == EXIT_BUILT && ft_lstsize(commands) == 1)
-		return (clear_cmds(&commands, EXIT_BUILT));
+	if (ft_lstsize(commands) == 1)
+	{
+		if (exe_simple_cmd(&commands, builts, my_envp) == EXIT_BUILT)
+			return (clear_cmds(&commands, EXIT_BUILT));
+	}
+	else
+		exe_pipeline(&commands, builts, my_envp);
 	return (clear_cmds(&commands, SUCCESS));
 }
 
@@ -67,17 +67,6 @@ static int	get_prompt(char **prompt)
 		return (free(*prompt), 1);
 	return (0);
 }
-
-/*static int	return_status(void)
-{
-	char	*status;
-	int		ret;
-
-	status = getenv_value("?");
-	ret = atoi(status);
-	free(status);
-	return (ret);
-}*/
 
 int	main(int argc, char *argv[], char *envp[])
 {

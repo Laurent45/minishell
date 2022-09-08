@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:38:44 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:11:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,20 @@ static int	set_command(t_list **tokens, t_command *cmd, t_list *my_envp)
 	return (tokredir(cmd, code, ((t_token *) node_token->content)->str, my_envp));
 }
 
-int	parse_to_command(t_list **cmds, t_list *tokens, int i, t_list *my_envp)
+int	parse_to_command(t_list **cmds, t_list *tokens, t_list *my_envp)
 {
+	int			num_cmd;
 	t_command	*cmd;
 	t_list		*node_cmd;
 
+	num_cmd = 0;
 	while (tokens)
 	{
-		if (new_command(&cmd, i) == FAILED)
+		if (new_command(&cmd, num_cmd) == FAILED)
 			return (clear_cmds(cmds, FAILED));
-		i++;
+		num_cmd++;
 		if (new_node(&node_cmd, (void *) cmd) == FAILED)
-		{
-			puterror(FAILED, "error new node in create_command");
 			return (del_cmd((void *) cmd), clear_cmds(cmds, FAILED));
-		}
 		ft_lstadd_back(cmds, node_cmd);
 		while (tokens && ((t_token *) tokens->content)->code != PIPE)
 		{

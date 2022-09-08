@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:17:51 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:57:45 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,3 @@ int	add_envvar(t_list **my_envp, char *envvar, int globale)
 	}
 	return (push_env(my_envp, dup, globale));
 }
-
-/*void	add_existatus(int exitstatus)
-{
-	char	*itoa_exit;
-	char	*envvar;
-
-	itoa_exit = ft_itoa(exitstatus);
-	if (!itoa_exit)
-		puterror(0, "failed while saving exit status");
-	envvar = ft_strjoin("?=", itoa_exit);
-	free(itoa_exit);
-	if (!envvar)
-		puterror(0, "failed while saving exit status");
-	if (add_envvar(envvar, 0) == 0)
-		puterror(0, "failed while saving exit status");
-	free(envvar);
-}*/

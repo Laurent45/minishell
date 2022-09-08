@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 17:14:49 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 16:40:23 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:28:40 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@
 
 # define NB_BUILT	7
 # define EXIT_BUILT	3
-
-/**
- *
- */
-void	init_built(t_built *builts);
 
 /**
  *

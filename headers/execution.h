@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 21:22:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:42:58 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:51:29 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@
 /**
  *
  */
-int		execute(t_list **commands, t_built *builts, t_list **my_envp);
+int		exe_pipeline(t_list **commands, t_built *builts, t_list **my_envp);
+
+/**
+ *
+ */
+int		exe_simple_cmd(t_list **commands, t_built *builts, t_list **my_envp);
 
 /**
  *
