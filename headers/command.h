@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:16 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:13:41 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:39:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ int		clear_cmds(t_list **commands, int ret);
  *
  */
 int		set_redir(t_redir **redir, int code, char *str, t_list *my_envp);
+
+/**
+ *
+ */
+int		set_heredoc_file(t_redir *redir, int num_cmd);
 
 /**
  *

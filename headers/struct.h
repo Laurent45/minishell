@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 16:40:41 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:13:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define OUTFILE	2
 # define APPENDFILE	3
 # define HEREDOC	4
+
+# define TMP_FILE	".hd_tmp_file_"
 
 typedef struct s_env
 {
@@ -46,6 +48,7 @@ typedef struct s_redir
 	int		code;
 	char	*file;
 	t_list	*heredoc;
+	char	*file_heredoc;
 }	t_redir;
 
 typedef struct s_command

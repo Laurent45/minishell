@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:14:13 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:38:44 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int	tokredir(t_command *cmd, int code, char *token_str, t_list *my_envp)
 	if (!dup_token_str)
 		return (puterror(FAILED, "char * in t_redir"));
 	if (set_redir(&redir, code, dup_token_str, my_envp) == FAILED)
+		return (del_redir(redir), FAILED);
+	if (set_heredoc_file(redir, cmd->num) == FAILED)
 		return (del_redir(redir), FAILED);
 	if (new_node(&node_redir, (void *) redir) == FAILED)
 	{

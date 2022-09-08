@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:14:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 23:03:47 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:40:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static int	heredoc(t_redir *redir)
 	int		fd;
 	t_list	*hdoc;
 
-	unlink("/tmp/_heredoc-minishell");
-	fd = open("/tmp/_heredoc-minishell", O_CREAT | O_RDWR, 0600);
+	fd = open(redir->file_heredoc, O_CREAT | O_RDWR, 0600);
 	if (fd == -1)
 		return (ft_perror(FAILED, "open"));
 	hdoc = redir->heredoc;
@@ -36,7 +35,7 @@ static int	heredoc(t_redir *redir)
 		hdoc = hdoc->next;
 	}
 	close(fd);
-	fd = open("/tmp/_heredoc-minishell", O_RDONLY);
+	fd = open(redir->file_heredoc, O_RDONLY);
 	if (fd == -1)
 		return (ft_perror(FAILED, "open"));
 	dup2(fd, 0);

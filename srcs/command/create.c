@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:42:21 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 12:35:47 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:13:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int	new_redir(t_redir **redir)
 		return (puterror(FAILED, "t_redir * in new_redir"));
 	(*redir)->file = NULL;
 	(*redir)->heredoc = NULL;
+	(*redir)->file_heredoc = NULL;
 	return (SUCCESS);
 }

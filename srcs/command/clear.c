@@ -6,12 +6,14 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:44:22 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 14:54:02 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:32:22 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
+
 #include <stdlib.h>
+#include <unistd.h>
 
 void	del_str(void *content)
 {
@@ -27,8 +29,11 @@ void	del_redir(void *redir)
 	rd = (t_redir *) redir;
 	free(rd->file);
 	ft_lstclear(&rd->heredoc, &del_str);
+	unlink(rd->file_heredoc);
+	free(rd->file_heredoc);
 	rd->file = NULL;
 	rd->heredoc = NULL;
+	rd->file_heredoc = NULL;
 	free(rd);
 }
 
