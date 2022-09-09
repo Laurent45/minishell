@@ -6,11 +6,12 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:28:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 11:03:52 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:09:47 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "init.h"
 
 #include <sys/wait.h>
 
@@ -33,5 +34,6 @@ int	wait_child(t_list *command)
 		}
 		command = command->next;
 	}
-	return (exitstatus);
+	set_status(exitstatus);
+	return (SUCCESS);
 }

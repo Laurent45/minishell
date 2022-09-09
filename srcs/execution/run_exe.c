@@ -6,16 +6,21 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 13:02:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:05:27 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:11:17 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "error.h"
+#include "init.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <stdio.h>
+#include <errno.h>
+
+extern int g_exit_status;
 
 static char	**args_to_array(t_list *lst)
 {
@@ -82,12 +87,10 @@ static char	**envs_to_array(t_list *my_envp)
 
 int	run_executable(t_command *command, t_list **my_envp)
 {
-	int		status;
 	char	**args;
 	char	**envp;
 
-	status = search_exe(command->cmd_args, *my_envp);
-	if (status == 0)
+	if (search_exe(command->cmd_args, *my_envp) == SUCCESS)
 	{
 		args = args_to_array(command->cmd_args);
 		if (!args)
@@ -100,9 +103,13 @@ int	run_executable(t_command *command, t_list **my_envp)
 		execve(args[0], args, envp);
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
+		if (errno == EACCES)
+			set_status(126);
+		else
+			set_status(127);
+		ft_perror(FAILED, args[0]);
 		free(args);
 		free(envp);
-		return (ft_perror(127, "execve"));
 	}
-	return (status);
+	return (g_exit_status);
 }
