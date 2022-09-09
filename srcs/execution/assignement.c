@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 12:02:39 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:54:59 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:52:06 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include "ft_ctype.h"
 
 #include <stdlib.h>
-
-extern t_list	*g_envs;
 
 int	assignement(t_list **my_envp, t_list *var, int globale)
 {

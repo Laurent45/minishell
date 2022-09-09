@@ -6,12 +6,13 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:00:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:29:30 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:40:09 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "ft_stdio.h"
+#include "init.h"
 #include "error.h"
 
 #include <unistd.h>
@@ -22,7 +23,8 @@ int	built_env(t_list *args, t_list **my_envp)
 	t_list	*tmp_envp;
 
 	if (ft_lstsize(args) != 1)
-		return (puterror(2, "env: options and arguments are not allow"));
+		return (set_status(2),\
+				puterror(FAILED, "env: options and arguments are not allow"));
 	tmp_envp = *my_envp;
 	while (tmp_envp)
 	{
@@ -34,5 +36,5 @@ int	built_env(t_list *args, t_list **my_envp)
 		}
 		tmp_envp = tmp_envp->next;
 	}
-	return (0);
+	return (set_status(0), SUCCESS);
 }

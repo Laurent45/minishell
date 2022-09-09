@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:25:57 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:21:58 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:41:04 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ft_string.h"
 #include "ft_ctype.h"
 #include "error.h"
+#include "init.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,7 +63,7 @@ static int	curr_lst(t_list *my_envp, char r, t_list **lst)
 			if (!curr)
 			{
 				ft_lstclear(lst, NULL);
-				return (0);
+				return (FAILED);
 			}
 			ft_lstadd_back(lst, curr);
 		}
@@ -70,7 +71,7 @@ static int	curr_lst(t_list *my_envp, char r, t_list **lst)
 	}
 	if (*lst)
 		sort(*lst);
-	return (1);
+	return (SUCCESS);
 }
 
 static void	print_env(t_list *lst)
@@ -102,18 +103,20 @@ static void	print_env(t_list *lst)
 static int	export_envvar(t_list **my_envp, t_list *envvar)
 {
 	char	*curr_envvar;
+	int		status;
 
+	status = 0;
 	while (envvar)
 	{
 		curr_envvar = (char *) envvar->content;
 		if (curr_envvar[0] != '_' && ft_isalpha(curr_envvar[0]) == 0)
-			puterror(2, "export: not a valid identifier");
+			 status = puterror(2, "export: not a valid identifier");
 		else
-			if (add_envvar(my_envp, curr_envvar, 1) == 0)
-				puterror(2, "export failed");
+			if (add_envvar(my_envp, curr_envvar, 1) == FAILED)
+				status = puterror(2, "export failed");
 		envvar = envvar->next;
 	}
-	return (0);
+	return (set_status(status), SUCCESS);
 }
 
 int	built_export(t_list *args, t_list **my_envp)
@@ -127,8 +130,8 @@ int	built_export(t_list *args, t_list **my_envp)
 	c = 'A';
 	while (c <= 'z')
 	{
-		if (curr_lst(*my_envp, c, &lst) == 0)
-			return (0);
+		if (curr_lst(*my_envp, c, &lst) == FAILED)
+			return (FAILED);
 		if (lst)
 		{
 			print_env(lst);
@@ -136,5 +139,5 @@ int	built_export(t_list *args, t_list **my_envp)
 		}
 		c++;
 	}
-	return (0);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:11:56 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/09 16:01:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,27 @@
 #include "ft_ctype.h"
 
 #include <stdlib.h>
+
+static	int	is_assignement(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] != '_' && ft_isalpha(str[i]) == 0)
+		return (FAILED);
+	i++;
+	while (str[i] != '=')
+	{
+		if (str[i] != '_' && ft_isalnum(str[i]) == 0)
+		{
+			if (str[i] == '+' && str[i + 1] == '=')
+				return (SUCCESS);
+			return (FAILED);
+		}
+		i++;
+	}
+	return (SUCCESS);
+}
 
 static int	tokword(t_command *cmd, char *token_str)
 {
@@ -32,8 +53,8 @@ static int	tokword(t_command *cmd, char *token_str)
 		free(dup_token_str);
 		return (puterror(FAILED, "node in word"));
 	}
-	if (ft_strchr(dup_token_str, '=') && cmd->cmd_args == NULL \
-			&& (dup_token_str[0] == '_' || ft_isalpha(dup_token_str[0]) != 0))
+	if (cmd->cmd_args == NULL && ft_strchr(dup_token_str, '=')\
+			&& is_assignement(dup_token_str) == SUCCESS)
 		ft_lstadd_back(&cmd->env_var, node_str);
 	else
 		ft_lstadd_back(&cmd->cmd_args, node_str);

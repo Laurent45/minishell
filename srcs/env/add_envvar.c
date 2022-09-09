@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:57:45 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:59:44 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	push_env(t_list **my_envp, char *envvar, int globale)
 
 	if (new_env(&env, envvar, globale) == FAILED)
 		return (FAILED);
-	node = ft_lstnew((void *) new_env);
+	node = ft_lstnew((void *) env);
 	if (!node)
 		return (del_env(env), FAILED);
 	ft_lstadd_back(my_envp, node);
