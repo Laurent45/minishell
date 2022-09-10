@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:27:47 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:31:22 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 10:14:36 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,9 @@ int	init_shell(char *envp[], t_list **my_envp, t_built *builts)
 void	set_status(int status)
 {
 	g_exit_status = status;
+}
+
+int	get_status(void)
+{
+	return (g_exit_status);
 }

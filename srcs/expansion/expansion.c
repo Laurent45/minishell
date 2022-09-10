@@ -6,12 +6,11 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 15:48:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 15:26:08 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/09 22:34:35 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
-#include "string.h"
 
 #include <stddef.h>
 

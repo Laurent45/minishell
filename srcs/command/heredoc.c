@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 19:10:00 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:27:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 10:12:33 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "error.h"
 #include "signal_handler.h"
 #include "ft_string.h"
+#include "init.h"
 
 #include <signal.h>
 #include <stdio.h>
@@ -28,7 +29,7 @@ static int	issigint(void)
 	struct stat	statbuf;
 
 	if (fstat(0, &statbuf) != 0)
-		return (FAILED);
+		return (set_status(130), FAILED);
 	return (SUCCESS);
 }
 

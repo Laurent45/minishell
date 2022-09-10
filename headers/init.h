@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:46:46 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:31:07 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 10:14:25 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int		init_shell(char *envp[], t_list **clone_env, t_built *builts);
  *
  */
 void	set_status(int status);
+
+/**
+ *
+ */
+int		get_status(void);
 
 
 #endif

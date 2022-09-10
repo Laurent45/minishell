@@ -6,12 +6,13 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:28:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/09 17:09:47 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 10:15:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "init.h"
+#include "ft_stdio.h"
 
 #include <sys/wait.h>
 
@@ -35,5 +36,7 @@ int	wait_child(t_list *command)
 		command = command->next;
 	}
 	set_status(exitstatus);
+	if (exitstatus == 131)
+		ft_putstr_fd("Quit (core dumped)\n", 2);
 	return (SUCCESS);
 }

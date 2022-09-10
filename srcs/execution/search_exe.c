@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:49:58 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/09 18:19:50 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/09 21:33:25 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ static int	call_access(char *path_exe, t_list *cmd)
 		{
 			free(cmd->content);
 			cmd->content = path_exe;
-			return (SUCCESS);
+			return (0);
 		}
 		free(path_exe);
 		return (cmd_not_found(126, (char *) cmd->content), 126);
 	}
 	free(path_exe);
-	return (0);
+	return (1);
 }
 
 static int	add_path(char **path, t_list *cmd)
@@ -63,7 +63,7 @@ static int	add_path(char **path, t_list *cmd)
 		free(tmp);
 		if (!path_exe)
 			return (cmd_not_found(127, (char *) cmd->content), FAILED);
-		if (call_access(path_exe, cmd) != 0)
+		if (call_access(path_exe, cmd) != 1)
 			return (SUCCESS);
 		i++;
 	}
@@ -78,6 +78,8 @@ int	search_exe(t_list *cmd, t_list *my_envp)
 
 	if (cmd == NULL)
 		return (SUCCESS);
+	if (ft_strcmp((char *) cmd->content, "") == 0)
+		return (cmd_not_found(127, (char *) cmd->content), FAILED);
 	if (ft_strchr((char *) cmd->content, '/') == 0)
 	{
 		path = getenv_value(my_envp, "PATH");
