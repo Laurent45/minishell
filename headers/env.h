@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 17:21:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 21:09:20 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:10:38 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env	*get_env(t_list *my_envp, char *varname);
 /**
  *
  */
-int		strlenvar(char *var);
+int		len_varname(char *var);
 
 /**
  *

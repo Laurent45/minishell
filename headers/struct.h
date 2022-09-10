@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:13:42 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:23:16 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 
 typedef struct s_env
 {
-	char	*var;
+	char	*varname;
+	char	*value;
 	int		globale;
 }	t_env;
 

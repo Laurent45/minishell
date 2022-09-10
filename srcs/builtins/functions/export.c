@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:25:57 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 21:41:04 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:38:54 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static int	curr_lst(t_list *my_envp, char r, t_list **lst)
 	while (my_envp)
 	{
 		env_var = (t_env *) my_envp->content;
-		if ((env_var->var)[0] == r && env_var->globale)
+		if ((env_var->varname)[0] == r && env_var->globale)
 		{
-			curr = ft_lstnew(env_var->var);
+			curr = ft_lstnew(env_var);
 			if (!curr)
 			{
 				ft_lstclear(lst, NULL);
@@ -76,45 +76,34 @@ static int	curr_lst(t_list *my_envp, char r, t_list **lst)
 
 static void	print_env(t_list *lst)
 {
-	int		i;
-	int		j;
+	t_env	*env_var;
 
 	while (lst)
 	{
-		i = 0;
-		while (((char *) lst->content)[i] != '=' && ((char *) lst->content)[i])
-			i++;
-		write(1, "export ", 7);
-		write(1, lst->content, i + 1);
-		if (((char *) lst->content)[i])
-		{
-			write(1, "\"", 1);
-			j = ++i;
-			while (((char *) lst->content)[j])
-				j++;
-			write(1, lst->content + i, j - i);
-			write(1, "\"", 1);
-		}
-		write(1, "\n", 1);
+		env_var = (t_env *) lst->content;
+		if (env_var->value != NULL)
+			printf("export %s=\"%s\"\n", env_var->varname, env_var->value);
+		else
+			printf("export %s\n", env_var->varname);
 		lst = lst->next;
 	}
 }
 
-static int	export_envvar(t_list **my_envp, t_list *envvar)
+static int	export_envvar(t_list **my_envp, t_list *args)
 {
-	char	*curr_envvar;
+	char	*add_args;
 	int		status;
 
 	status = 0;
-	while (envvar)
+	while (args)
 	{
-		curr_envvar = (char *) envvar->content;
-		if (curr_envvar[0] != '_' && ft_isalpha(curr_envvar[0]) == 0)
+		add_args = (char *) args->content;
+		if (add_args[0] != '_' && ft_isalpha(add_args[0]) == 0)
 			 status = puterror(2, "export: not a valid identifier");
 		else
-			if (add_envvar(my_envp, curr_envvar, 1) == FAILED)
+			if (add_envvar(my_envp, add_args, 1) == FAILED)
 				status = puterror(2, "export failed");
-		envvar = envvar->next;
+		args = args->next;
 	}
 	return (set_status(status), SUCCESS);
 }

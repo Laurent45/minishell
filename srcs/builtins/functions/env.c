@@ -6,16 +6,16 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:00:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 16:40:09 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:34:20 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "ft_stdio.h"
 #include "init.h"
 #include "error.h"
 
 #include <unistd.h>
+#include <stdio.h>
 
 int	built_env(t_list *args, t_list **my_envp)
 {
@@ -29,11 +29,8 @@ int	built_env(t_list *args, t_list **my_envp)
 	while (tmp_envp)
 	{
 		env = (t_env *) tmp_envp->content;
-		if (env->globale)
-		{
-			ft_putstr_fd(env->var, 1);
-			ft_putstr_fd("\n", 1);
-		}
+		if (env->globale && env->value)
+			printf("%s=%s\n", env->varname, env->value);
 		tmp_envp = tmp_envp->next;
 	}
 	return (set_status(0), SUCCESS);

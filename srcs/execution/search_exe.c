@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:49:58 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 12:04:41 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 16:09:01 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,8 @@ int	search_exe(t_list *cmd, t_list *my_envp)
 	{
 		path = getenv_value(my_envp, "PATH");
 		if (!path || path[0] == '\0')
-			return (free(path), SUCCESS);
+			return (SUCCESS);
 		split = ft_split(path, ':');
-		free(path);
 		if (split == NULL)
 			return (cmd_not_found((char *) cmd->content), FAILED);
 		ret = add_path(split, cmd);

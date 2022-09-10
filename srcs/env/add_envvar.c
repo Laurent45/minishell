@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 17:59:44 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 18:11:21 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ft_string.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	push_env(t_list **my_envp, char *envvar, int globale)
 {
@@ -30,31 +31,50 @@ static int	push_env(t_list **my_envp, char *envvar, int globale)
 	return (SUCCESS);
 }
 
+static int	add_value(t_env *exist, char *value, int globale, char *equal_index)
+{
+	char	*n_value;
+
+	if (equal_index[-1] == '+' && exist->value)
+	{
+			n_value = ft_strjoin(exist->value, value);
+			free(value);
+			if (!n_value)
+				return (FAILED);
+	}
+	else
+		n_value = value;
+	free(exist->value);
+	exist->value = n_value;
+	if (exist->globale == 0)
+		exist->globale = globale;
+	return (SUCCESS);
+}
+
 int	add_envvar(t_list **my_envp, char *envvar, int globale)
 {
 	t_env	*exist;
-	char	*dup;
+	char	*equal_index;
 	char	*tmp;
 
-	tmp = ft_substr(envvar, 0, strlenvar(envvar));
+	tmp = ft_substr(envvar, 0, len_varname(envvar));
 	if (!tmp)
 		return (FAILED);
 	exist = get_env(*my_envp, tmp);
 	free(tmp);
-	dup = ft_strdup(envvar);
-	if (!dup)
-		return (FAILED);
 	if (exist)
 	{
-		if (ft_strchr(dup, '='))
+		equal_index = ft_strchr(envvar, '=');
+		if (equal_index)
 		{
-			free(exist->var);
-			exist->var = dup;
+			tmp = ft_strdup(equal_index + 1);
+			if (!tmp)
+				return (FAILED);
+			return (add_value(exist, tmp, globale, equal_index));
 		}
-		else
-			free(dup);
-		exist->globale = globale;
+		if (exist->globale == 0)	
+			exist->globale = globale;
 		return (SUCCESS);
 	}
-	return (push_env(my_envp, dup, globale));
+	return (push_env(my_envp, envvar, globale));
 }

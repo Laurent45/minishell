@@ -6,7 +6,7 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:38:15 by llepiney          #+#    #+#             */
-/*   Updated: 2022/09/07 22:31:54 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:17:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,27 @@
 #include "ft_string.h"
 #include "ft_ctype.h"
 #include "error.h"
+#include "init.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-
-extern int	g_exit_status; 
 
 void	delenvvar(t_list **my_envp, char *varname)
 {
 	t_list	*before;
 	t_list	*tmp_envp;
-	int		len_varname;
+	int		l_varname;
 	int		len_currvar;
 
 	before = NULL;
 	tmp_envp = *my_envp;
-	len_varname = ft_strlen(varname);
+	l_varname = ft_strlen(varname);
 	while (tmp_envp)
 	{
-		len_currvar = strlenvar((char *)((t_env *) tmp_envp->content)->var);
-		if (len_currvar < len_varname)
-			len_currvar = len_varname;
-		if (ft_strncmp((char *)((t_env *) tmp_envp->content)->var, \
+		len_currvar = len_varname((char *)((t_env *) tmp_envp->content)->varname);
+		if (len_currvar < l_varname)
+			len_currvar = l_varname;
+		if (ft_strncmp((char *)((t_env *) tmp_envp->content)->varname, \
 					varname, len_currvar) == 0)
 		{
 			if (before == NULL)
@@ -56,7 +55,7 @@ int	built_unset(t_list *args, t_list **my_envp)
 	int		ret;
 
 	if (ft_lstsize(args) == 1)
-		return (0);
+		return (set_status(0), SUCCESS);
 	ret = 0;
 	while (args)
 	{
@@ -68,6 +67,6 @@ int	built_unset(t_list *args, t_list **my_envp)
 			delenvvar(my_envp, varname);
 		args = args->next;
 	}
-	g_exit_status = ret;
-	return (0);
+	set_status(ret);
+	return (SUCCESS);
 }

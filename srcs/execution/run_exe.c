@@ -6,21 +6,20 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 13:02:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 10:54:15 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 18:21:34 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "error.h"
 #include "init.h"
+#include "ft_string.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
 #include <errno.h>
-
-extern int g_exit_status;
 
 static char	**args_to_array(t_list *lst)
 {
@@ -43,7 +42,7 @@ static char	**args_to_array(t_list *lst)
 	return (ret);
 }
 
-static int	lstsize_globale(t_list *lst)
+static int	nb_envvar(t_list *lst)
 {
 	int		size;
 	t_env	*env;
@@ -52,31 +51,60 @@ static int	lstsize_globale(t_list *lst)
 	while (lst)
 	{
 		env = (t_env *) lst->content;
-		if (env->globale)
+		if (env->globale && env->value)
 			size++;
 		lst = lst->next;
 	}
 	return (size);
 }
 
+static char	*concat_name_value(t_env *envvar)
+{
+	char	*tmp;
+	char	*name_value;
+	char	*shlvl;
+
+	tmp = ft_strjoin(envvar->varname, "=");
+	if (!tmp)
+		return (NULL);
+	if (ft_strcmp(envvar->varname, "SHLVL") == 0)
+	{
+		shlvl = ft_itoa(ft_atoi(envvar->value) + 1);
+		if (!shlvl)
+		{
+			free(tmp);
+			return (NULL);
+		}
+		name_value = ft_strjoin(tmp, shlvl);
+		free(tmp);
+		return (name_value);
+	}
+	name_value = ft_strjoin(tmp, envvar->value);
+	free(tmp);
+	return (name_value);
+}
+
 static char	**envs_to_array(t_list *my_envp)
 {
 	t_env	*env;
 	int		i;
-	int		size;
 	char	**ret;
 
-	size = lstsize_globale(my_envp);
-	ret = (char **) malloc(sizeof(char *) * (size + 1));
+	ret = (char **) malloc(sizeof(char *) * (nb_envvar(my_envp) + 1));
 	if (!ret)
 		return (NULL);
 	i = 0;
 	while (my_envp)
 	{
 		env = (t_env *) my_envp->content;
-		if (env->globale)
+		if (env->globale && env->value)
 		{
-			ret[i] = env->var;
+			ret[i] = concat_name_value(env);
+			if (ret[i] == NULL)
+			{
+				ft_clear_split(ret);
+				return (NULL);
+			}
 			i++;
 		}
 		my_envp = my_envp->next;
@@ -109,7 +137,7 @@ int	run_executable(t_command *command, t_list **my_envp)
 			set_status(127);
 		ft_perror(FAILED, args[0]);
 		free(args);
-		free(envp);
+		ft_clear_split(envp);
 	}
-	return (g_exit_status);
+	return (get_status());
 }

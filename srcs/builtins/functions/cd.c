@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 22:40:09 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:56:35 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:08:27 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,13 @@
 
 static char	*home(t_list *my_envp)
 {
-	int		i;
+	t_env	*env_var;
 
-	i = 0;
 	while (my_envp)
 	{
-		if (ft_strncmp("HOME", ((t_env *) my_envp->content)->var, 4) == 0)
-		{
-			while ((((t_env *) my_envp->content)->var)[i] != '=')
-				i++;
-			return (((t_env *) my_envp->content)->var + i + 1);
-		}
+		env_var = (t_env *) my_envp->content;
+		if (ft_strncmp("HOME", env_var->varname, 4) == 0)
+			return (env_var->value);
 		my_envp = my_envp->next;
 	}
 	return (NULL);

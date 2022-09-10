@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:54:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 10:53:56 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:32:38 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,23 @@ int	child_std(t_list *node_cmd, int pipe[2], int tmpin)
 
 	cmd = (t_command *) node_cmd->content;
 	if (cmd->num != 0 && dup2(tmpin, 0) == -1)
+	{
+		if (tmpin != -1)
+			close(tmpin);
+		close(pipe[0]);
+		close(pipe[1]);
 		return (FAILED);
+	}
 	if (node_cmd->next && dup2(pipe[1], 1) == -1)
+	{	
+		if (tmpin != -1)
+			close(tmpin);
+		close(pipe[0]);
+		close(pipe[1]);
 		return (FAILED);
+	}
+	if (tmpin != -1)
+		close(tmpin);
 	close(pipe[0]);
 	close(pipe[1]);
 	return (SUCCESS);

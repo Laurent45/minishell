@@ -6,17 +6,22 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 19:10:10 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 11:00:10 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:04:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "struct.h"
+
 #include <stdlib.h>
 
-void	del_env(void	*content)
+void	del_env(void *content)
 {
-	free(((t_env *) content)->var);
-	free(content);
+	t_env	*env_var;
+
+	env_var = (t_env *) content;
+	free(env_var->varname);
+	free(env_var->value);
+	free(env_var);
 }
 
 int	clear_env(t_list **env, int ret)

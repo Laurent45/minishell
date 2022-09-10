@@ -6,7 +6,7 @@
 /*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:37:42 by rigel             #+#    #+#             */
-/*   Updated: 2022/09/07 22:25:31 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:07:53 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,15 @@ static int	dollar_alloc(char *str, char **new, int *anch, int *i, t_list *my_env
 	if (!var)
 		return (0);
 	tmp = getenv_value(my_envp, var);
+	/*if (tmp == NULL)
+		return (free(var), 0);*/
 	if (tmp == NULL)
-		return (free(var), 0);
-	tmp2 = ft_strjoin(*new, tmp);
+		tmp2 = ft_strjoin(*new, "");
+	else
+		tmp2 = ft_strjoin(*new, tmp);
+	if (ft_strcmp(var, "?") == 0)
+		free(tmp); //WARNING
 	free(var);
-	free(tmp);
 	free(*new);
 	if (tmp2 == NULL)
 		return (0);
