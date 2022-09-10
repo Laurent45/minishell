@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:54:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 23:05:07 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 10:53:56 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	child_simple_cmd(t_list **commands, t_list **my_envp)
 	if (redirection(cmd, *my_envp) == FAILED)
 		exit_clear(commands, my_envp, FAILED);
 	if (cmd->cmd_args == NULL)
-		exit_clear(commands, my_envp, FAILED);
+		exit_clear(commands, my_envp, SUCCESS);
 	if (cmd->cmd_args && assignement(my_envp, cmd->env_var, 1) == FAILED)
 		exit_clear(commands, my_envp, FAILED);
 	exit_clear(commands, my_envp, run_executable(cmd, my_envp));

@@ -6,7 +6,7 @@
 /*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:45:42 by rigel             #+#    #+#             */
-/*   Updated: 2022/07/23 18:21:57 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/10 11:04:31 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*trim_quote(char *str)
 	if (!new)
 	{
 		free(str);
+		str = NULL;
 		return (NULL);
 	}
 	while (str[i])
@@ -81,6 +82,5 @@ char	*trim_quote(char *str)
 		j++;
 	}
 	new[j] = '\0';
-	free(str);
-	return (new);
+	return (free(str), new);
 }
