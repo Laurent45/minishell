@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:27:07 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 16:37:18 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:13:09 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@
 
 int	built_pwd(t_list *args, t_list **my_envp)
 {
-	(void) my_envp;
-	(void) args;
-
 	char	*pwd;
 
+	(void) my_envp;
+	(void) args;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

@@ -6,13 +6,12 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 19:35:11 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:51:42 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:28:52 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "error.h"
-#include "string.h"
 #include "execution.h"
 #include "expansion.h"
 #include "builtins.h"
@@ -73,7 +72,7 @@ int	exe_pipeline(t_list **commands, t_built *builts, t_list **my_envp)
 		{
 			if (child_std(cmd, pipe_fd, tmpin) == FAILED)
 				exit_clear(commands, my_envp, 1);
-			child_pipeline(commands, cmd->content, builts, my_envp);
+			pipeline(commands, cmd->content, builts, my_envp);
 		}
 		cmd = cmd->next;
 	}
@@ -81,25 +80,25 @@ int	exe_pipeline(t_list **commands, t_built *builts, t_list **my_envp)
 	return (wait_child(*commands));
 }
 
-int	exe_simple_cmd(t_list **commands, t_built *builts, t_list **my_envp)
+int	exe_simple_cmd(t_list **commands, t_built *builts, t_list **env)
 {
 	int			id;
 	t_command	*cmd;
 	t_built		*built;
 
-	cmd = (t_command *) (*commands)->content;
-	if (expand_cmdargs(&cmd->cmd_args, *my_envp) == FAILED)
+	cmd = (t_command *)(*commands)->content;
+	if (expand_cmdargs(&cmd->cmd_args, *env) == FAILED)
 		return (FAILED);
 	built = isbuiltins(cmd->cmd_args, builts);
 	if (built)
-		return (run_builtins(built, cmd, my_envp));
-	if (cmd->cmd_args == NULL && assignement(my_envp, cmd->env_var, 0) == FAILED)
+		return (run_builtins(built, cmd, env));
+	if (cmd->cmd_args == NULL && assignement(env, cmd->env_var, 0) == FAILED)
 		return (FAILED);
 	id = fork();
 	cmd->pid = id;
 	if (id == -1)
 		return (ft_perror(FAILED, "fork"));
 	if (id == 0)
-		child_simple_cmd(commands, my_envp);
+		child_simple_cmd(commands, env);
 	return (wait_child(*commands));
 }

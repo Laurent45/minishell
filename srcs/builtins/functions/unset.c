@@ -6,7 +6,7 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:38:15 by llepiney          #+#    #+#             */
-/*   Updated: 2022/09/10 17:17:58 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:12:18 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ void	delenvvar(t_list **my_envp, char *varname)
 	t_list	*before;
 	t_list	*tmp_envp;
 	int		l_varname;
-	int		len_currvar;
+	int		l_currvar;
 
 	before = NULL;
 	tmp_envp = *my_envp;
 	l_varname = ft_strlen(varname);
 	while (tmp_envp)
 	{
-		len_currvar = len_varname((char *)((t_env *) tmp_envp->content)->varname);
-		if (len_currvar < l_varname)
-			len_currvar = l_varname;
+		l_currvar = len_varname((char *)((t_env *) tmp_envp->content)->varname);
+		if (l_currvar < l_varname)
+			l_currvar = l_varname;
 		if (ft_strncmp((char *)((t_env *) tmp_envp->content)->varname, \
-					varname, len_currvar) == 0)
+					varname, l_currvar) == 0)
 		{
 			if (before == NULL)
 				*my_envp = tmp_envp->next;

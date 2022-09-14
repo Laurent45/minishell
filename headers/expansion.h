@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 16:26:23 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/09 22:31:48 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 20:49:17 by rigel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*expand_trim(char *to_expand, t_list *my_envp);
  *
  */
 char	*expand(t_list *my_envp, char *str, int test, int i);
-
+void	dollar_alloc2(char *tmp, char *new, char **tmp2);
 /**
  *
  */

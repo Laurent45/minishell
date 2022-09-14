@@ -6,7 +6,7 @@
 /*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:37:42 by rigel             #+#    #+#             */
-/*   Updated: 2022/09/10 17:07:53 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:48:35 by rigel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 #include "env.h"
 #include "ft_string.h"
 #include "ft_ctype.h"
+#include "struct.h"
 
 #include <stdlib.h>
 
-static int	tmp_alloc(char *str, char **new, int anch, int i)
+static int	tmp_alloc(t_expansion *x, char **new, int i)
 {
 	char	*tmp;
 	char	*tmp2;
 
-	tmp = ft_substr(str, (unsigned int)anch, (size_t)(i - anch));
+	tmp = ft_substr(x->str, (unsigned int)(x->anch), (size_t)(i - x->anch));
 	if (!tmp)
 		return (0);
 	tmp2 = ft_strjoin(*new, tmp);
@@ -35,34 +36,30 @@ static int	tmp_alloc(char *str, char **new, int anch, int i)
 	return (1);
 }
 
-static int	dollar_alloc(char *str, char **new, int *anch, int *i, t_list *my_envp)
+static int	dollar_alloc(t_expansion *x, char **new, int *i, t_list *my_envp)
 {
 	char	*var;
 	char	*tmp;
 	char	*tmp2;
 
-	*anch = *i;
-	while ((ft_isalnum(str[*i]) || str[*i] == '_' || str[*i] == '?') \
-			&& str[*i] != '\0')
+	x->anch = *i;
+	while ((ft_isalnum(x->str[*i]) || x->str[*i] == '_' || x->str[*i] == '?') \
+			&& x->str[*i] != '\0')
 		*i = *i + 1;
-	var = ft_substr(str, (unsigned int)(*anch), (size_t)(*i - *anch));
+	var = ft_substr(x->str, (unsigned int)(x->anch), (size_t)(*i - x->anch));
+	var = trim_quote(var);
 	if (!var)
 		return (0);
 	tmp = getenv_value(my_envp, var);
-	/*if (tmp == NULL)
-		return (free(var), 0);*/
-	if (tmp == NULL)
-		tmp2 = ft_strjoin(*new, "");
-	else
-		tmp2 = ft_strjoin(*new, tmp);
+	dollar_alloc2(tmp, *new, &tmp2);
 	if (ft_strcmp(var, "?") == 0)
-		free(tmp); //WARNING
+		free(tmp);
 	free(var);
 	free(*new);
 	if (tmp2 == NULL)
 		return (0);
 	*new = tmp2;
-	*anch = *i;
+	x->anch = *i;
 	return (1);
 }
 
@@ -89,18 +86,19 @@ static int	quote_expand(char *str, int *i, int isexpand, int *quote)
 	return (1);
 }
 
-static int	dollar_case(char *str, char **new, int *i, int *anch, t_list *my_envp)
+static int	dollar_case(t_expansion *x, char **new, int *i, t_list *my_envp)
 {
-	if (str[*i] == '$')
+	if (x->str[*i] == '$')
 	{
-		if (!tmp_alloc(str, new, *anch, *i))
+		if (!tmp_alloc(x, new, *i))
 			return (2);
 		*i = *i + 1;
-		if (ft_isdigit(str[*i]) || str[*i] == '\0')
+		if (ft_isdigit(x->str[*i]) || x->str[*i] == '\0')
 			return (0);
-		else if (!ft_is_alphanum(str[*i]) && str[*i] != '_')
+		else if (!ft_is_alphanum(x->str[*i]) && x->str[*i] != '_'
+			&& x->str[*i] != '\'' && x->str[*i] != '\"')
 			return (0);
-		if (!dollar_alloc(str, new, anch, i, my_envp))
+		if (!dollar_alloc(x, new, i, my_envp))
 			return (2);
 		return (0);
 	}
@@ -109,27 +107,28 @@ static int	dollar_case(char *str, char **new, int *i, int *anch, t_list *my_envp
 
 char	*expand(t_list *my_envp, char *str, int isexpand, int i)
 {
-	int		anch;
-	char	*new;
-	int		quote;
+	t_expansion	x;
+	char		*new;
+	int			quote;
 
 	new = malloc(sizeof(char));
 	if (!new)
 		return (NULL);
 	new[0] = '\0';
-	anch = 0;
+	x.anch = 0;
+	x.str = str;
 	quote = 0;
 	while (str[i])
 	{
 		if (!quote_expand(str, &i, isexpand, &quote))
 			continue ;
-		if (!(dollar_case(str, &new, &i, &anch, my_envp)))
+		if (!(dollar_case(&x, &new, &i, my_envp)))
 			continue ;
-		else if (dollar_case(str, &new, &i, &anch, my_envp) == 2)
+		else if (dollar_case(&x, &new, &i, my_envp) == 2)
 			return (free(new), NULL);
 		i++;
 	}
-	if (!tmp_alloc(str, &new, anch, i))
+	if (!tmp_alloc(&x, &new, i))
 		return (free(new), NULL);
 	return (new);
 }

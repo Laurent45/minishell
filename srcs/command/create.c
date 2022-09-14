@@ -6,12 +6,13 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 12:42:21 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:13:17 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:23:27 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "error.h"
+
 #include <stdlib.h>
 
 int	new_node(t_list **node, void *content)

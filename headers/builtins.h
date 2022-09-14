@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 17:14:49 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:28:40 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:52:03 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,29 @@ int		built_cd(t_list *args, t_list **my_envp);
  */
 int		built_echo(t_list *args, t_list **my_envp);
 
-
 /**
  *
  */
 int		built_env(t_list *args, t_list **my_envp);
-
 
 /**
  *
  */
 int		built_exit(t_list *args, t_list **my_envp);
 
-
 /**
  *
  */
 int		built_export(t_list *args, t_list **my_envp);
-
 
 /**
  *
  */
 int		built_pwd(t_list *args, t_list **my_envp);
 
-
 /*
  *
  */
 int		built_unset(t_list *args, t_list **my_envp);
-
 
 #endif

@@ -6,12 +6,12 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 16:55:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 09:38:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:19:54 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "string.h"
+#include "ft_string.h"
 
 #include <stddef.h>
 
@@ -24,7 +24,7 @@ t_built	*isbuiltins(t_list *cmd_args, t_built *builts)
 	i = 0;
 	while (builts[i].func)
 	{
-		if (strcmp(builts[i].func, (char *) cmd_args->content) == 0)
+		if (ft_strcmp(builts[i].func, (char *) cmd_args->content) == 0)
 			return (&builts[i]);
 		i++;
 	}

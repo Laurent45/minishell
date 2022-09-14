@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:46:02 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 16:01:44 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:53:42 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static int	is_valid_pair(int code, int next_code)
 {
-	if (next_code == WORD ||\
+	if (next_code == WORD || \
 		(code == PIPE && (next_code != -1 && next_code != PIPE)))
 		return (SUCCESS);
 	return (FAILED);
@@ -33,7 +33,7 @@ int	check_tokens(t_list **tokens)
 	token = *tokens;
 	code = ((t_token *) token->content)->code;
 	if (code == PIPE)
-		return (set_status(2),\
+		return (set_status(2), \
 				clear_tokens(tokens, puterror(FAILED, SYNTAX_ERROR)));
 	while (token)
 	{
@@ -43,7 +43,7 @@ int	check_tokens(t_list **tokens)
 		else
 			next_code = ((t_token *) token->next->content)->code;
 		if (code != WORD && is_valid_pair(code, next_code) == FAILED)
-			return (set_status(2),\
+			return (set_status(2), \
 					clear_tokens(tokens, puterror(FAILED, SYNTAX_ERROR)));
 		token = token->next;
 	}

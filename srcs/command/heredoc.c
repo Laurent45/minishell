@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 19:10:00 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 10:12:33 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:05:19 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,3 @@ int	heredoc(t_redir *redir, char *tok_word, t_list *my_envp)
 	close(tmp_stdin);
 	return (free(endword), ret);
 }
-

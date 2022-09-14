@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 21:22:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 14:51:29 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:50:58 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int		child_std(t_list *node_cmd, int pipe[2], int tmpin);
 /**
  *
  */
-void	child_pipeline(t_list **commands, t_command *cmd, t_built *builts\
-		, t_list **my_envp);
+void	pipeline(t_list **cmds, t_command *cmd, t_built *builts, t_list **env);
+
 /**
  *
  */

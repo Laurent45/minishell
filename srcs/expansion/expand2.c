@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_trim.c                                      :+:      :+:    :+:   */
+/*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 15:48:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/11 20:02:01 by rigel            ###   ########.fr       */
+/*   Created: 2022/09/12 20:43:41 by rigel             #+#    #+#             */
+/*   Updated: 2022/09/13 10:40:14 by rigel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansion.h"
+#include "ft_string.h"
 
-#include <stddef.h>
-
-char	*expand_trim(char *value, t_list *my_envp)
+void	dollar_alloc2(char *tmp, char *new, char **tmp2)
 {
-	char	*str_expand;
-
-	str_expand = expand(my_envp, value, 0, 0);
-	if (!str_expand)
-		return (NULL);
-	str_expand = trim_quote(str_expand);
-	if (!str_expand)
-		return (NULL);
-	return (str_expand);
+	if (tmp == NULL)
+		*tmp2 = ft_strjoin(new, "");
+	else
+		*tmp2 = ft_strjoin(new, tmp);
 }

@@ -6,18 +6,17 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 22:36:17 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/07 22:29:44 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:37:08 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "error.h"
 #include "env.h"
+#include "init.h"
 #include "ft_string.h"
 
 #include <stdio.h>
-
-extern int g_exit_status;
 
 static int	islong(char *str)
 {
@@ -50,24 +49,20 @@ static int	islong(char *str)
 
 int	built_exit(t_list *args, t_list **my_envp)
 {
-	(void) my_envp;
-
 	long	status;
 
+	(void) my_envp;
 	printf("exit\n");
 	if (args->next == NULL)
-	{
-		g_exit_status = 0;
-		return (EXIT_BUILT);
-	}
+		return (set_status(0), EXIT_BUILT);
 	if (islong((char *) args->next->content) == 0)
 	{
-		g_exit_status = 2;
+		set_status(2);
 		return (puterror(EXIT_BUILT, "exit: numeric argument required"));
 	}
 	if (ft_lstsize(args) > 2)
-		return (puterror(FAILED, "exit: too many args"));
+		return (set_status(1), puterror(FAILED, "exit: too many args"));
 	status = (unsigned long) ft_atol((char *) args->next->content);
-	g_exit_status = status % 256;
+	set_status(status % 256);
 	return (EXIT_BUILT);
 }

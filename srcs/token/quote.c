@@ -6,11 +6,12 @@
 /*   By: llepiney <llepiney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 15:33:24 by llepiney          #+#    #+#             */
-/*   Updated: 2022/09/07 12:25:39 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:27:28 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
+#include "init.h"
 
 #include <stdio.h>
 
@@ -81,6 +82,7 @@ int	quote_case2(char **arg, t_list **tokens, char **buff)
 		if ((*arg)[i + 1] == '\0')
 		{
 			printf("Open quotes.\n");
+			set_status(2);
 			return (tok_alloc_err(tokens));
 		}
 		else if (is_it((*arg)[i + 1]) == code)

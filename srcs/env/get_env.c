@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 18:00:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 15:41:22 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:04:48 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*getenv_value(t_list *my_envp, char *varname)
 		return (ft_itoa(get_status()));
 	while (my_envp)
 	{
-		env_var = (char *) ((t_env *) my_envp->content)->varname;
+		env_var = (char *)((t_env *) my_envp->content)->varname;
 		l_currvar = len_varname(env_var);
 		if (l_currvar < l_varname)
 			l_currvar = l_varname;

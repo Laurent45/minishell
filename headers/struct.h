@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rigel <rigel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:34:03 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 14:23:16 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 20:27:54 by rigel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,11 @@ typedef struct s_command
 	t_list			*redir;
 	t_list			*env_var;
 }	t_command;
+
+typedef struct s_expansion
+{
+	int		anch;
+	char	*str;
+}	t_expansion;
 
 #endif

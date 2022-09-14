@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 22:40:09 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 15:08:27 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:10:54 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*home(t_list *my_envp)
 	return (NULL);
 }
 
-static int set_env_pwd(t_list **my_envp, char *oldpwd)
+static int	set_env_pwd(t_list **my_envp, char *oldpwd)
 {
 	char	*pwd;
 	char	*env_oldpwd;
@@ -48,7 +48,7 @@ static int set_env_pwd(t_list **my_envp, char *oldpwd)
 	free(pwd);
 	if (!env_oldpwd || !env_pwd)
 		return (free(env_oldpwd), free(env_pwd), FAILED);
-	if (add_envvar(my_envp, env_oldpwd, 1) == FAILED\
+	if (add_envvar(my_envp, env_oldpwd, 1) == FAILED \
 		|| add_envvar(my_envp, env_pwd, 1) == FAILED)
 		return (free(env_oldpwd), free(env_pwd), FAILED);
 	return (free(env_oldpwd), free(env_pwd), SUCCESS);
@@ -63,13 +63,13 @@ int	built_cd(t_list *args, t_list **my_envp)
 	oldpwd = getcwd(NULL, 0);
 	lenargs = ft_lstsize(args);
 	if (lenargs > 2)
-		return (set_status(2), free(oldpwd),\
+		return (set_status(2), free(oldpwd), \
 				puterror(FAILED, "cd: too many arguments"));
 	if (lenargs == 1 || ft_strcmp((char *) args->next->content, "~") == 0)
 	{
 		dir = home(*my_envp);
 		if (dir == NULL)
-			return (free(oldpwd),\
+			return (free(oldpwd), \
 					set_status(2), puterror(FAILED, "cd: HOME not set"));
 	}
 	else

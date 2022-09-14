@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:25:57 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 15:38:54 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/13 12:24:04 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	export_envvar(t_list **my_envp, t_list *args)
 	{
 		add_args = (char *) args->content;
 		if (add_args[0] != '_' && ft_isalpha(add_args[0]) == 0)
-			 status = puterror(2, "export: not a valid identifier");
+			status = puterror(2, "export: not a valid identifier");
 		else
 			if (add_envvar(my_envp, add_args, 1) == FAILED)
 				status = puterror(2, "export failed");

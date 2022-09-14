@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 11:05:04 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/09 16:01:56 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:08:16 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	tokword(t_command *cmd, char *token_str)
 		free(dup_token_str);
 		return (puterror(FAILED, "node in word"));
 	}
-	if (cmd->cmd_args == NULL && ft_strchr(dup_token_str, '=')\
+	if (cmd->cmd_args == NULL && ft_strchr(dup_token_str, '=') \
 			&& is_assignement(dup_token_str) == SUCCESS)
 		ft_lstadd_back(&cmd->env_var, node_str);
 	else
@@ -85,7 +85,7 @@ static int	tokredir(t_command *cmd, int code, char *token_str, t_list *my_envp)
 	return (SUCCESS);
 }
 
-static int	set_command(t_list **tokens, t_command *cmd, t_list *my_envp)
+static int	set_command(t_list **tokens, t_command *cmd, t_list *env)
 {
 	t_list	*node_token;
 	int		code;
@@ -96,7 +96,7 @@ static int	set_command(t_list **tokens, t_command *cmd, t_list *my_envp)
 		return (tokword(cmd, (((t_token *) node_token->content)->str)));
 	*tokens = (*tokens)->next;
 	node_token = *tokens;
-	return (tokredir(cmd, code, ((t_token *) node_token->content)->str, my_envp));
+	return (tokredir(cmd, code, ((t_token *) node_token->content)->str, env));
 }
 
 int	parse_to_command(t_list **cmds, t_list *tokens, t_list *my_envp)

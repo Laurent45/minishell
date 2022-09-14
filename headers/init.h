@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:46:46 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 10:14:25 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:51:22 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ void	set_status(int status);
  *
  */
 int		get_status(void);
-
 
 #endif

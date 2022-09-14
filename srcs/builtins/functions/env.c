@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:00:27 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 15:34:20 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:16:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	built_env(t_list *args, t_list **my_envp)
 	t_list	*tmp_envp;
 
 	if (ft_lstsize(args) != 1)
-		return (set_status(2),\
+		return (set_status(2), \
 				puterror(FAILED, "env: options and arguments are not allow"));
 	tmp_envp = *my_envp;
 	while (tmp_envp)

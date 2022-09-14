@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 19:01:05 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 18:11:21 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:20:41 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "ft_string.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 static int	push_env(t_list **my_envp, char *envvar, int globale)
 {
@@ -37,10 +36,10 @@ static int	add_value(t_env *exist, char *value, int globale, char *equal_index)
 
 	if (equal_index[-1] == '+' && exist->value)
 	{
-			n_value = ft_strjoin(exist->value, value);
-			free(value);
-			if (!n_value)
-				return (FAILED);
+		n_value = ft_strjoin(exist->value, value);
+		free(value);
+		if (!n_value)
+			return (FAILED);
 	}
 	else
 		n_value = value;
@@ -72,7 +71,7 @@ int	add_envvar(t_list **my_envp, char *envvar, int globale)
 				return (FAILED);
 			return (add_value(exist, tmp, globale, equal_index));
 		}
-		if (exist->globale == 0)	
+		if (exist->globale == 0)
 			exist->globale = globale;
 		return (SUCCESS);
 	}

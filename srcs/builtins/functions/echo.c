@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 22:38:42 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 16:29:39 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:13:55 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	check_newline(t_list **args)
 	while (*args)
 	{
 		*args = (*args)->next;
-		args_str = (char *) (*args)->content;
+		args_str = (char *)(*args)->content;
 		i = 0;
 		if (args_str[i] == '-')
 		{
@@ -44,9 +44,9 @@ static int	check_newline(t_list **args)
 
 int	built_echo(t_list *args, t_list **my_envp)
 {
-	(void) my_envp;
 	int		newline;
 
+	(void) my_envp;
 	newline = check_newline(&args);
 	while (args)
 	{

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 13:02:30 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 18:21:34 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:22:59 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <stdio.h>
 #include <errno.h>
 
 static char	**args_to_array(t_list *lst)

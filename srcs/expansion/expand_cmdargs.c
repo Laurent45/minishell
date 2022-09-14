@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 15:59:21 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/10 11:20:38 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/13 12:23:51 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,14 @@ int	expand_cmdargs(t_list **cmd_args, t_list *my_envp)
 
 	new_cmdargs = NULL;
 	tmp_cmdargs = *cmd_args;
-	to_split = 0;
 	while (tmp_cmdargs)
 	{
+		to_split = 0;
 		ret_exp = expand(my_envp, (char *) tmp_cmdargs->content, 0, 0);
 		if (ret_exp == NULL)
 			return (ft_lstclear(&new_cmdargs, &del_str), FAILED);
-		if (ft_strcmp(ret_exp, (char *) tmp_cmdargs->content) != 0)
+		if (ft_strchr((char *) tmp_cmdargs->content, '\'') == NULL \
+				&& ft_strchr((char *) tmp_cmdargs->content, '\"') == NULL)
 			to_split = 1;
 		if (add_expand(ret_exp, &new_cmdargs, to_split) == FAILED)
 			return (ft_lstclear(&new_cmdargs, &del_str), FAILED);

@@ -6,7 +6,7 @@
 /*   By: lfrederi <lfrederi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:14:12 by lfrederi          #+#    #+#             */
-/*   Updated: 2022/09/08 15:14:18 by lfrederi         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:53:57 by lfrederi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static int	run_shell(char *prompt, t_built *builts, t_list **my_envp)
 	tokens = NULL;
 	commands = NULL;
 	if (create_tokens(&tokens, prompt, 0) == FAILED)
-		return (free(prompt), FAILED);
+		return (set_status(2), free(prompt), FAILED);
 	free(prompt);
 	if (!tokens)
 		return (SUCCESS);
 	if (check_tokens(&tokens) == FAILED)
 		return (clear_tokens(&tokens, FAILED));
 	if (parse_to_command(&commands, tokens, *my_envp) == FAILED)
-		return (clear_tokens(&tokens, FAILED));
+		return (set_status(2), clear_tokens(&tokens, FAILED));
 	clear_tokens(&tokens, 0);
 	if (ft_lstsize(commands) == 1)
 	{
