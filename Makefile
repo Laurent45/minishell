@@ -8,7 +8,7 @@ TOKEN			= $(addprefix token/, parse.c token.c utils.c check.c quote.c clear.c)
 ENV				= $(addprefix env/, clone.c clear.c add_envvar.c get_env.c)
 EXECUTION		= $(addprefix execution/, execute.c wait.c redirection.c assignement.c search_exe.c run_exe.c child.c)
 BUILTINS		= $(addprefix builtins/, $(addprefix functions/, cd.c echo.c pwd.c env.c exit.c export.c unset.c) run_builtin.c is_builtins.c)
-EXPANSION		= $(addprefix expansion/, expand.c trim.c expand_cmdargs.c expand_trim.c)
+EXPANSION		= $(addprefix expansion/, expand.c trim.c expand_cmdargs.c expand_trim.c expand2.c)
 ERROR			= $(addprefix error/, error.c)
 SIGNAL			= $(addprefix signal/, signal.c)
 
